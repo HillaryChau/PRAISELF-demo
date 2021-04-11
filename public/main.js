@@ -122,9 +122,9 @@ let positiveAffirm = [
 
 
 function showPositiveFeeling(event) {
-  let posAffirmSection = document.querySelector(".positiveThoughts")
+  let posAffirmDiv = document.querySelector(".positiveThoughts")
 
-  posAffirmSection.innerHTML = positiveAffirm[event.target.value]
+  posAffirmDiv.innerHTML = positiveAffirm[event.target.value]
   //event.target.value shows the option value from negThoughts that's selected by the user//
 
 }
