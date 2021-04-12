@@ -10,18 +10,20 @@ module.exports = function (app, passport, db) {
 
   // PROFILE SECTION =========================
   app.get('/profile', isLoggedIn, function (req, res) {
-    db.collection('orders')
+    console.log("hello")
+      res.render('profile.ejs', { message: req.flash('profileMessage') });
+  });
+
+  // CUSTOMIZE SECTION =========================
+  app.get('/customize', isLoggedIn, function (req, res) {
+    db.collection('positiveAffirm')
       .find()
       .toArray((err, result) => {
-        if (err) return console.log(err);
 
-        const pendingOrders = result.filter(({ pending }) => pending);  // results is all of the orders, this filters if pending key is true //
-        const completedOrders = result.filter(({ completed }) => completed);
+        res.render('customize.ejs', {
 
-        res.render('profile.ejs', {
-          user: req.user,
-          pendingOrders,
-          completedOrders,
+
+
         });
       });
   });
@@ -34,57 +36,6 @@ module.exports = function (app, passport, db) {
 
   // message board routes ===============================================================
 
-  app.post('/orders', (req, res) => {
-    const {
-      barista,  //the keys are made from matching the name attribute of the input//
-      customer,
-      drink,
-      milk,
-      sweetener,
-      temperature,
-      note,
-      size,
-    } = req.body;
-
-    db.collection('orders').save(
-      {
-        barista,
-        customer,
-        drink,
-        milk,
-        sweetener,
-        temperature,
-        note,
-        size,
-        pending: true,
-        completed: false,
-      },
-      (err, result) => {
-        if (err) return console.log(err);
-        console.log('saved to database');
-        res.redirect('/profile');
-      },
-    );
-  });
-
-  app.put('/orders', async (req, res) => {
-    try {
-      const { pending, completed, _id } = req.body;
-      await db.collection('orders').findOneAndUpdate(
-        { _id: ObjectId(_id) },
-        {
-          $set: {
-            pending,
-            completed,
-          },
-        },
-      );
-    } catch (e) {
-      console.error(e);
-    }
-
-    res.redirect(303, '/profile');
-  });
 
   app.delete('/orders', (req, res) => {
     db.collection('orders').findOneAndDelete(

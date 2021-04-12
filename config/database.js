@@ -2,6 +2,6 @@
 
 module.exports = {
   url:
-    'mongodb+srv://demo:demo@roulette.alvha.mongodb.net/Coffee?retryWrites=true&w=majority',
-  dbName: 'Coffee',
+    'mongodb+srv://rc:rc@rc21.qlizq.mongodb.net/PRAISELF?retryWrites=true&w=majority',
+  dbName: 'PRAISELF',
 };
