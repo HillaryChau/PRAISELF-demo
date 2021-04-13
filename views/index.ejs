@@ -1,55 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
-  <title>PRAISELF</title>
-</head>
-
-<nav>
-  <div class="home"><a href="/">Home</a></div>
-  <div class="customize"><a href="/customize">Customize</a></div>
-  <div class="profile"><a href="/profile">Profile</a></div>
-  <div class="login"><a href="/login">Login</a></div>
-  <div class="login"><a href="/signup">Sign Up</a></div>
-</nav>
-
-<main>
-<h1>PRAISELF</h1>
-
-<div class="negativeThoughts">
-  <select aria-label="Choose Your Feeling" name="negFeeling" id="negFeeling" title="negFeeling" class="negFeeling">
-    <option value="0">When you feel lonely and sad</option>
-    <option value="1">When you feel terrified (without your safety being in danger)</option>
-    <option value="2">When you feel insignificant</option>
-    <option value="3">When you are nervous or afraid</option>
-    <option value="4">When you are angry</option>
-    <option value="5">When you feel hopeless and at the end of your rope</option>
-    <option value="6">When you feel conflicted about a decision</option>
-    <option value="7">When you are among friends</option>
-    <option value="8">When you are around strangers</option>
-    <option value="9">When you are at work</option>
-    <option value="10">When you can't sleep</option>
-    <option value="11">When you don't want to face the day</option>
-    <option value="12">When you worry about your future</option>
-    <option value="13">When you can't get your loved ones to support your dreams</option>
-    <option value="14">When you come face to face with a problem</option>
-    <option value="15">When you want to do more with your life but feel stuck</option>
-    <option value="16">When you can't stop comparing yourself to others</option>
-    <option value="17">When you feel you are not good enough no matter how hard you try</option>
-    <option value="18">When you want to give up</option>
-    <option value="19">When you recognize how powerful, gifted, talented and brilliant you really are</option>
-  </select>
-</div>
-
-<div class="positiveThoughts">
-
-</div>
-</main>
-  <script src="main.js"></script>
-</body>
-
+   <head>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+      <link rel="stylesheet" href="style.css">
+      <title>PRAISELF</title>
+   </head>
+   <nav>
+      <div class="home"><a href="/">Home</a></div>
+      <div class="customize"><a href="/customize">Customize</a></div>
+      <div class="profile"><a href="/profile">Profile</a></div>
+      <div class="login"><a href="/login">Login</a></div>
+      <div class="login"><a href="/signup">Sign Up</a></div>
+   </nav>
+   <main>
+      <h1>PRAISELF</h1>
+      <div class="negativeThoughts">
+         <select aria-label="Choose Your Feeling" name="negFeeling" id="negFeeling" title="negFeeling" class="negFeeling">
+            <% for (let i=0; i < affirmations.length; i++) { %>
+              <option value="<%= i %>"><%= affirmations[i].negativeEmotion %></option>
+            <% } %>
+         </select>
+      </div>
+      <div class="positiveThoughts"></div>
+      <i class="fa fa-heart" style="font-size: 40px;"></i>
+      <i class="fa fa-star" style="font-size: 40px;"></i>
+      <i class="far fa-star" style="font-size: 40px;"></i>
+   </main>
+   <script>
+     window.affirmations = "<%= JSON.stringify(affirmations) %>";
+     affirmations = affirmations.replaceAll('&#34;','"').replaceAll('&#39;',"'")
+     affirmations = JSON.parse(affirmations)
+   </script>
+   <script src="main.js"></script>
+   </body>
 </html>

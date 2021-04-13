@@ -1,17 +1,34 @@
-const ObjectId = require('mongodb').ObjectId;  // finding records (records = mongodb objects) with a specific id//
+const ObjectId = require('mongodb').ObjectId; // finding records (records = mongodb objects) with a specific id
+const affirmations = require('./affirmations');
 
 module.exports = function (app, passport, db) {
   // normal routes ===============================================================
 
   // show the home page (will also have our login links)
   app.get('/', function (req, res) {
-    res.render('index.ejs');
+    db.collection('affirmations')
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+
+        res.render('index.ejs', {
+          user: req.user,
+          affirmations: result,
+        });
+      });
+  });
+
+  //
+  app.get('/seed', function (req, res) {
+    affirmations.forEach((affirmation) => {
+      db.collection('affirmations').save(affirmation);
+    });
+    res.render('nothing.ejs', {});
   });
 
   // PROFILE SECTION =========================
   app.get('/profile', isLoggedIn, function (req, res) {
-    console.log("hello")
-      res.render('profile.ejs', { message: req.flash('profileMessage') });
+    res.render('profile.ejs', { message: req.flash('profileMessage') });
   });
 
   // CUSTOMIZE SECTION =========================
@@ -19,12 +36,7 @@ module.exports = function (app, passport, db) {
     db.collection('positiveAffirm')
       .find()
       .toArray((err, result) => {
-
-        res.render('customize.ejs', {
-
-
-
-        });
+        res.render('customize.ejs', {});
       });
   });
 
@@ -35,7 +47,6 @@ module.exports = function (app, passport, db) {
   });
 
   // message board routes ===============================================================
-
 
   app.delete('/orders', (req, res) => {
     db.collection('orders').findOneAndDelete(
