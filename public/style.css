@@ -27,3 +27,9 @@ nav div{
   margin-bottom: 20px;
   float: left;
 }
+
+.affirmationsCard{
+  text-align: left;
+  border: 2px solid blue;
+  background: aliceblue;
+}

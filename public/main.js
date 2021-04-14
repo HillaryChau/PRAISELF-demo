@@ -1,26 +1,22 @@
-const positiveAffirmations = window.affirmations.map((e) => e.positiveAffirmation);
-
 function showPositiveFeeling(event) {
+  //window is a global variable in the browser,  in which we grab the affirmations collection from the DB
   // event.target.value shows the option value from negThoughts that's selected by the user
-  const text = positiveAffirmations[event.target.value].split('.').map(e => {
-    return `<p>${e}</p>`
+  //.postiviveAffirmation.split('.')  this is being used since the positiveAffirmation is written as a super long string.
+  //.map() transforms each sentence, with the <p> added to it.
+  const positiveText =  window.affirmations[event.target.value].positiveAffirmation.split('.').map(sentence => {
+    return `<p>${sentence}</p>`
   }).join('')
-  document.querySelector('.positiveThoughts').innerHTML = text;
-}
+  const negativeText =`<h3>${window.affirmations[event.target.value].negativeEmotion}.<h3>`
 
-function openModalWithAffirmations(event) {
-  document.querySelector('.modal').classList.add('active');
-  document.querySelector('.modal-text-container').innerHTML = positiveAffirmations[event.target.dataset.value];
-}
-
-function closeModal(event) {
-  document.querySelector('.modal').classList.remove('active');
+  document.querySelector('.negFeelingHeader').innerHTML = negativeText
+  document.querySelector('.positiveThoughts').innerHTML = positiveText
 }
 
 document.querySelector('#negFeeling').addEventListener('change', showPositiveFeeling);
 
-document.querySelectorAll('.i').forEach((element) => {
-  element.addEventListener('click', openModalWithAffirmations);
-});
 
-document.querySelector('.close').addEventListener('click', closeModal);
+document.querySelector('.fa-heart').addEventListener("click",addFavorite)
+
+function addFavorite(){
+  
+}

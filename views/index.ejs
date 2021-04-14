@@ -22,10 +22,13 @@
             <% } %>
          </select>
       </div>
-      <div class="positiveThoughts"></div>
-      <i class="fa fa-heart" style="font-size: 40px;"></i>
-      <i class="fa fa-star" style="font-size: 40px;"></i>
-      <i class="far fa-star" style="font-size: 40px;"></i>
+      <div class="affirmationsCard">
+        <div class="negFeelingHeader"></div>
+        <div class="positiveThoughts"></div>
+        <i class="fa fa-heart" style="font-size: 40px;"></i>
+        <i class="fa fa-star" style="font-size: 40px;"></i>
+        <i class="far fa-star" style="font-size: 40px;"></i>
+      </div>
    </main>
    <script>
      window.affirmations = "<%= JSON.stringify(affirmations) %>";
