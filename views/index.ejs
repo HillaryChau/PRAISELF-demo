@@ -8,8 +8,10 @@
    </head>
    <nav>
       <div class="home"><a href="/">Home</a></div>
-      <div class="customize"><a href="/customize">Customize</a></div>
-      <div class="profile"><a href="/profile">Profile</a></div>
+      <% if (user) { %>
+         <div class="customize"><a href="/customize">Customize</a></div>
+         <div class="profile"><a href="/profile">Profile</a></div>
+      <% } %>
       <div class="login"><a href="/login">Login</a></div>
       <div class="login"><a href="/signup">Sign Up</a></div>
    </nav>
@@ -17,24 +19,30 @@
       <h1>PRAISELF</h1>
       <div class="negativeThoughts">
          <select aria-label="Choose Your Feeling" name="negFeeling" id="negFeeling" title="negFeeling" class="negFeeling">
+            <option>Choose an option</option>
             <% for (let i=0; i < affirmations.length; i++) { %>
-              <option value="<%= i %>"><%= affirmations[i].negativeEmotion %></option>
+            <option value="<%= i %>"><%= affirmations[i].negativeEmotion %></option>
             <% } %>
          </select>
       </div>
-      <div class="affirmationsCard">
-        <div class="negFeelingHeader"></div>
-        <div class="positiveThoughts"></div>
-        <i class="fa fa-heart" style="font-size: 40px;"></i>
-        <i class="fa fa-star" style="font-size: 40px;"></i>
-        <i class="far fa-star" style="font-size: 40px;"></i>
+      <div class="affirmationsCard hide">
+         <div class="negFeelingHeader"></div>
+         <div class="positiveThoughts"></div>
+         <% if (user) { %>
+         <i class="far fa-heart hide" style="font-size: 40px;"></i>
+         <% } %>
       </div>
    </main>
    <script>
-     window.affirmations = "<%= JSON.stringify(affirmations) %>";
-     affirmations = affirmations.replaceAll('&#34;','"').replaceAll('&#39;',"'")
-     affirmations = JSON.parse(affirmations)
+      window.affirmations = "<%= JSON.stringify(affirmations) %>";
+      window.affirmations = affirmations.replaceAll('&#34;','"').replaceAll('&#39;',"'")
+      window.affirmations = JSON.parse(affirmations)
    </script>
+   <% if (user) { %>
+   <script>
+      window.email = "<%= user.local.email %>";
+   </script>
+   <% } %>
    <script src="main.js"></script>
    </body>
 </html>

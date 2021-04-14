@@ -1,26 +1,25 @@
-body{
+body {
   text-align: center;
-  font-family:Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-nav{
+nav {
   display: flex;
   justify-content: center;
 }
 
-main{
+main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
-nav div{
+nav div {
   margin: 0 20px;
 }
 
 .favAffirm,
-.customAffirm{
+.customAffirm {
   background: grey;
   height: 300px;
   width: 300px;
@@ -28,8 +27,16 @@ nav div{
   float: left;
 }
 
-.affirmationsCard{
+.affirmationsCard {
   text-align: left;
   border: 2px solid blue;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 10px;
   background: aliceblue;
+  width: 400px;
+}
+
+.hide {
+  visibility: hidden;
 }

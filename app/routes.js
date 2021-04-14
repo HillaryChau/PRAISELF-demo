@@ -18,44 +18,88 @@ module.exports = function (app, passport, db) {
       });
   });
 
-  //
-  app.get('/seed', function (req, res) {
-    affirmations.forEach((affirmation) => {
-      db.collection('affirmations').save(affirmation);
-    });
-    res.render('nothing.ejs', {});
+  app.get('/profile', function (req, res) {
+    db.collection('affirmations')
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+
+        res.render('profile.ejs', {
+          user: req.user,
+          affirmations: result,
+        });
+      });
   });
+
+  app.get('/favorites', function (req, res) {
+    db.collection('favorites')
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+
+        if (req.user) {
+          const favorites = result.filter(
+            (e) => e.email === req.user.local.email,
+          );
+
+          res.send({ favorites });
+        } else {
+          res.send('Page unavailable');
+        }
+      });
+  });
+
+  app.get('/affirmations', function (req, res) {
+    db.collection('affirmations')
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+
+        res.send({
+          affirmations: result,
+        });
+      });
+  });
+
+  // uncomment and visit route to reseed database
+  // app.get('/seed', function (req, res) {
+  //   affirmations.forEach((affirmation) => {
+  //     db.collection('affirmations').save(affirmation);
+  //   });
+  //   res.render('nothing.ejs', {});
+  // });
 
   // PROFILE SECTION =========================
   app.get('/profile', isLoggedIn, function (req, res) {
     res.render('profile.ejs', { message: req.flash('profileMessage') });
   });
 
-  // CUSTOMIZE SECTION =========================
-  app.get('/customize', isLoggedIn, function (req, res) {
-    db.collection('positiveAffirm')
-      .find()
-      .toArray((err, result) => {
-        res.render('customize.ejs', {});
-      });
+  // FAVORITES SECTION =========================
+  app.put('/favorites', isLoggedIn, function (req, res) {
+    const query = { affirmationId: req.body.id, email: req.body.email };
+    const update = {
+      $set: {
+        affirmationId: req.body.id,
+        email: req.body.email,
+        isFavorite: !req.body.isFavorite //if it is already favorite, it negates it
+      },
+    };
+    const options = { upsert: true };
+
+    db.collection('favorites').updateOne(
+      query,
+      update,
+      options,
+      (err, result) => {
+        res.send({ favorites: result });
+      },
+    );
   });
 
   // LOGOUT ==============================
   app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
-  });
-
-  // message board routes ===============================================================
-
-  app.delete('/orders', (req, res) => {
-    db.collection('orders').findOneAndDelete(
-      { _id: ObjectId(req.body._id) },
-      (err, result) => {
-        if (err) return res.send(500, err);
-        res.send('Message deleted!');
-      },
-    );
   });
 
   // =============================================================================
