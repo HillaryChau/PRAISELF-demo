@@ -57,6 +57,13 @@ button:hover{
   color: magenta;
 }
 
+.fa-trash{
+  text-align: right;
+}
+
+.fa-times::before:hover{
+  color: green;
+}
 
 /******************************************
 /* ADDITIONAL STYLES

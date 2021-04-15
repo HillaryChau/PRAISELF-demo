@@ -35,6 +35,8 @@ const heart = document.querySelector('.fa-heart')
   }
 }
 
+
+///Adds Affiration from Home to display onto the profile page//
 function addFavorite(event) {
   const id = event.target.dataset.id; //this is the heart that's selected
   const isFavorite = event.target.classList.contains('fa')//filled in heart that's selected
@@ -62,7 +64,7 @@ function addFavorite(event) {
         document.querySelector('.fa-heart').classList.add('fa');
       }
 
-    
+
     });
 }
 

@@ -96,6 +96,18 @@ module.exports = function (app, passport, db) {
     );
   });
 
+  app.delete('/favorites', (req, res) => {
+  db.collection('favorites').findOneAndDelete(  //findOneAndDelete is a function form MongoDb//
+    {_id: ObjectId(req.body.id) },
+    (err, result) => {
+      console.log("result",result)
+      if (err) return res.send(500, err);
+      res.send('Message deleted!');
+    },
+  );
+});
+
+
   // LOGOUT ==============================
   app.get('/logout', function (req, res) {
     req.logout();

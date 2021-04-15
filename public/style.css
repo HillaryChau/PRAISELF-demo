@@ -38,5 +38,6 @@ nav div {
 }
 
 .hide {
-  visibility: hidden;
+  /* visibility: hidden; */
+  display: none;
 }
