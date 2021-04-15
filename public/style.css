@@ -48,7 +48,17 @@ i.fa.fa-times:hover{
   cursor:pointer;
 }
 
-
 .hide {
   display: none;
+}
+/* /////////////CUSTOMIZE PAGE/////////////// */
+.customFeeling{
+  width: 82.5%;
+  height: 30px;
+}
+
+textarea{
+  margin-top: 20px;
+  width: 82.5%;
+  height: 200px;
 }
