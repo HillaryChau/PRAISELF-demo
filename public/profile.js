@@ -3,50 +3,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setTimeout(() => resolve(1), 1); // (*)
   })
     .then(() => getFavorites())
-    .then(() => getAffirmation());
+    .then(() => getAffirmations())
+    .then((affirmations) => renderAffirmationCards(affirmations))
+    .then(() => getCustomAffirmations())
+    .then((affirmations) => renderAffirmationCards(affirmations))
+    .then(() => addListeners());
 });
 
-function getFavorites() {
-  return fetch('favorites', {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => {
-      return res.json(); // response to turn it into a json object
-    })
-    .then((jsonObject) => {
-      window.favorites = jsonObject.favorites;
-    });
+function addListeners() {
+  document.querySelectorAll('.fa-times').forEach((deleteButton) => {
+    deleteButton.addEventListener('click', deleteFavorite);
+  });
 }
 
-// To display favorite affirmations on the profile page//
-function getAffirmation() {
-  return fetch('affirmations', {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((jsonObject) => {
-      window.affirmations = jsonObject.affirmations;
-
-      renderAffirmationCards();
-
-      // we need to create event delagation since event delagation is
-      // when we assign a function to an element that isn't there yet
-      document.querySelectorAll('.fa-times').forEach((deleteButton) => {
-        deleteButton.addEventListener('click', deleteFavorite);
-      });
-    });
-}
-
-function renderAffirmationCards() {
-  window.affirmations
+function renderAffirmationCards(affirmations) {
+  affirmations
     .filter((affirmation) => {
       // check if affirmationID matches favorite
       // keep affirmations that have are favorites
@@ -58,11 +29,12 @@ function renderAffirmationCards() {
       const favorite = favorites.find(
         (favoriteObject) => favoriteObject.affirmationId === affirmation._id,
       );
-      addAffirmationCard(affirmation, favorite);
+
+      renderAffirmationCard(affirmation, favorite);
     });
 }
 
-function addAffirmationCard(affirmation, favorite) {
+function renderAffirmationCard(affirmation, favorite) {
   const positiveText = affirmation.positiveAffirmation
     .split('.')
     .map((sentence) => {
@@ -88,9 +60,9 @@ function addAffirmationCard(affirmation, favorite) {
   negFeelingHeader.innerHTML = affirmation.negativeEmotion;
   positiveThoughts.innerHTML = positiveText;
 
+  card.append(trash);
   card.append(negFeelingHeader);
   card.append(positiveThoughts);
-  card.append(trash);
 
   document.querySelector('.favorites').append(card);
 }

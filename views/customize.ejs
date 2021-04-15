@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-  <title>PRAISELF</title>
-</head>
-
-<nav>
-  <div class="home"><a href="/">Home</a></div>
-  <div class="customize"><a href="/customize">Customize</a></div>
-  <div class="profile"><a href="/profile">Profile</a></div>
-  <div class="login"><a href="/login">Login</a></div>
-  <div class="login"><a href="/signup">Sign Up</a></div>
-</nav>
-<main>
-<h1>PRAISELF</h1>
-<h2>Customize Page<h2>
-<p>Please type the feeling and affirmations you want to add below. </p>
-
-<form class="submitForm">
-
-  <div class="newNegativeThoughts">
-    <input class="customFeeling" type="text" name="" value="" placeholder="Please type your feeling here.">
-  </div>
-
-  <div class="newPositiveThoughts">
-    <textarea name="newaffirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
-  </div>
-  <button class="submitButton">Submit</button>
-</form>
-
-</main>
-  <script src="main.js"></script>
-</body>
-
+   <head>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" href="style.css">
+      <title>PRAISELF</title>
+   </head>
+   <nav>
+      <div class="home"><a href="/">Home</a></div>
+      <div class="customize"><a href="/customize">Customize</a></div>
+      <div class="profile"><a href="/profile">Profile</a></div>
+      <div class="login"><a href="/login">Login</a></div>
+      <div class="login"><a href="/signup">Sign Up</a></div>
+   </nav>
+   <main>
+      <h1>PRAISELF</h1>
+      <h2>
+      Customize Page
+      <h2>
+      <p>Please type the feeling and affirmations you want to add below. </p>
+      <form class="submitForm">
+         <div class="newNegativeThoughts">
+            <input class="customFeeling" type="text" name="" value="" placeholder="Please type your feeling here.">
+         </div>
+         <div class="newPositiveThoughts">
+            <textarea name="newaffirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
+         </div>
+         <button class="submitButton">Submit</button>
+      </form>
+      <h3 class="success-container"></h3>
+   </main>
+   <script src="customize.js"></script>
+   </body>
 </html>

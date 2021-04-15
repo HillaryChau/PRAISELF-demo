@@ -1,25 +1,53 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  new Promise(function (resolve, reject) {
+// getFavorites, getAffirmations, getCustomAffirmations are already loaded
+// on html page from <script src="loading.js"></script>
+
+document.addEventListener('DOMContentLoaded', async (event) => {
+  await new Promise(function (resolve, reject) {
     setTimeout(() => resolve(1), 1); // (*)
   })
     .then(() => getFavorites())
+    .then(() => getAffirmations())
+    .then((affirmations) => renderAffirmationOptions(affirmations))
+    .then(() => getCustomAffirmations())
+    .then((affirmations) => renderCustomAffirmationOptions(affirmations))
+    .then(() => addListeners());
 });
 
-function getFavorites() {
-  return fetch('favorites', {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => {
-      return res.json(); // response to turn it into a json object
-    })
-    .then((jsonObject) => {
-      window.favorites = jsonObject.favorites;
-    });
+function addListeners() {
+  if (window.email) {
+    document
+      .querySelector('.fa-heart')
+      .addEventListener('click', toggleFavorite);
+  }
+
+  document
+    .querySelector('#negFeeling')
+    .addEventListener('change', renderAffirmationCard);
 }
 
+function renderAffirmationOptions(affirmations) {
+  for (let index = 0; index < affirmations.length; index++) {
+    const affirmation = affirmations[index];
+    const option = document.createElement('option');
+    option.setAttribute('value', index);
+    option.setAttribute('data-affirmation', 'default');
+    option.innerText = affirmation.negativeEmotion;
+
+    document.querySelector('#negFeeling').appendChild(option);
+  }
+}
+
+function renderCustomAffirmationOptions(affirmations) {
+  for (let index = 0; index < affirmations.length; index++) {
+    const affirmation = affirmations[index];
+    const option = document.createElement('option');
+    option.setAttribute('value', index + 20); // customAffirmations start at 20
+    option.setAttribute('data-affirmation', 'custom');
+    option.innerText = affirmation.negativeEmotion;
+
+    document.querySelector('#negFeeling').appendChild(option);
+  }
+}
 
 function renderAffirmationCard(event) {
   // window is a global variable in the browser,  in which we grab the affirmations collection from the DB
@@ -33,7 +61,12 @@ function renderAffirmationCard(event) {
     document.querySelector('.fa-heart').classList.add('far');
   }
 
-  const affirmation = window.affirmations[event.target.value];
+  const isDefaultAffirmation = event.target.value < 20;
+
+  const affirmation = isDefaultAffirmation
+    ? window.defaultAffirmations[event.target.value]
+    : window.customAffirmations[event.target.value - 20];
+
   const positiveText = affirmation.positiveAffirmation
     .split('.')
     .map((sentence) => {
@@ -41,70 +74,60 @@ function renderAffirmationCard(event) {
     })
     .join('');
   const negativeText = `<h3>${affirmation.negativeEmotion}.<h3>`;
-  const id = affirmation._id.toString();
+  const affirmationId = affirmation._id.toString();
 
   document.querySelector('.negFeelingHeader').innerHTML = negativeText;
   document.querySelector('.positiveThoughts').innerHTML = positiveText;
   document.querySelector('.affirmationsCard').classList.remove('hide');
 
   if (window.email) {
-    document.querySelector('.fa-heart').classList.remove('hide');
-    document.querySelector('.fa-heart').setAttribute('data-id', id);
+    const favoriteAffirmation = window.favorites.find(
+      (fav) => fav.affirmationId === affirmationId,
+    );
 
-    if (window.favorites.includes(id)) {
+    document.querySelector('.fa-heart').classList.remove('hide');
+    document
+      .querySelector('.fa-heart')
+      .setAttribute('data-affirmation-id', affirmationId);
+
+    if (favoriteAffirmation) {
+      document
+        .querySelector('.fa-heart')
+        .setAttribute('data-favorite-id', favoriteAffirmation._id);
       document.querySelector('.fa-heart').classList.remove('far');
       document.querySelector('.fa-heart').classList.add('fa');
     }
   }
 }
 
-///Adds Affiration from Home to display onto the profile page//
 function toggleFavorite(event) {
-  const id = event.target.dataset.id; //this is the heart that's selected
-  const isFavorite = event.target.classList.contains('fa'); //filled in heart that's selected
+  const affirmationId = event.target.getAttribute('data-affirmation-id'); // this is the heart that's selected
+  const favoriteId = event.target.getAttribute('data-favorite-id');
+  const isFavorite = event.target.classList.contains('fa'); // filled in heart that's selected
 
-  fetch('favorites', {
-    method: 'put',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id,
-      email: window.email,
-      isFavorite: isFavorite,
-    }),
-  })
-    .then(() => {
-      return getFavorites();
+  if (isFavorite) {
+    fetch('favorites', {
+      method: 'delete',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _id: favoriteId,
+      }),
     })
-    .then((jsonObject) => {
-      if (document.querySelector('.fa-heart').classList.contains('fa')) {
+      .then(() => getFavorites())
+      .then(() => {
         document.querySelector('.fa-heart').classList.remove('fa');
         document.querySelector('.fa-heart').classList.add('far');
-      } else {
-        document.querySelector('.fa-heart').classList.remove('far');
-        document.querySelector('.fa-heart').classList.add('fa');
-      }
-    });
-}
-
-if (window.email) {
-  document.querySelector('.fa-heart').addEventListener('click', toggleFavorite);
-
-  document.addEventListener('DOMContentLoaded', (event) => {
-    fetch('favorites', {
-      method: 'get',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((jsonObject) => {
-        window.favorites = jsonObject.favorites.map(
-          (favorites) => favorites.affirmationId,
-        );
       });
-  });
+  } else {
+    fetch('favorites', {
+      method: 'put',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _id: affirmationId,
+      }),
+    }).then(() => {
+      document.querySelector('.fa-heart').classList.remove('far');
+      document.querySelector('.fa-heart').classList.add('fa');
+    });
+  }
 }
-
-document
-  .querySelector('#negFeeling')
-  .addEventListener('change', renderAffirmationCard);

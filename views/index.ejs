@@ -20,9 +20,6 @@
       <div class="negativeThoughts">
          <select aria-label="Choose Your Feeling" name="negFeeling" id="negFeeling" title="negFeeling" class="negFeeling">
             <option>Choose an option</option>
-            <% for (let i=0; i < affirmations.length; i++) { %>
-            <option value="<%= i %>"><%= affirmations[i].negativeEmotion %></option>
-            <% } %>
          </select>
       </div>
       <div class="affirmationsCard hide">
@@ -33,16 +30,12 @@
          <% } %>
       </div>
    </main>
-   <script>
-      window.affirmations = "<%= JSON.stringify(affirmations) %>";
-      window.affirmations = affirmations.replaceAll('&#34;','"').replaceAll('&#39;',"'")
-      window.affirmations = JSON.parse(affirmations)
-   </script>
    <% if (user) { %>
    <script>
       window.email = "<%= user.local.email %>";
    </script>
    <% } %>
+   <script src="loading.js"></script>
    <script src="main.js"></script>
    </body>
 </html>

@@ -2,21 +2,77 @@ const ObjectId = require('mongodb').ObjectId; // finding records (records = mong
 const affirmations = require('./affirmations');
 
 module.exports = function (app, passport, db) {
-  // normal routes ===============================================================
+  // ========================== SEEDING ==========================
+
+  // uncomment and visit route to reseed database
+  // app.get('/seed', function (req, res) {
+  //   affirmations.forEach((affirmation) => {
+  //     db.collection('affirmations').save(affirmation);
+  //   });
+  //   res.render('nothing.ejs', {});
+  // });
+
+  // ========================== PAGES ==========================
 
   // show the home page (will also have our login links)
   app.get('/', function (req, res) {
-    db.collection('affirmations')
-      .find()
-      .toArray((err, result) => {
-        if (err) return console.log(err);
-
-        res.render('index.ejs', {
-          user: req.user,
-          affirmations: result,
-        });
-      });
+    res.render('index.ejs', {
+      user: req.user,
+    });
   });
+
+  app.get('/profile', isLoggedIn, function (req, res) {
+    res.render('profile.ejs', {
+      user: req.user,
+    });
+  });
+
+  app.get('/customize', isLoggedIn, function (req, res) {
+    res.render('customize.ejs', {
+      user: req.user,
+    });
+  });
+
+  // ========================== POST / PUT ==========================
+
+  app.put('/favorites', isLoggedIn, function (req, res) {
+    const query = {
+      affirmationId: req.body._id,
+      email: req.user.local.email,
+    };
+    const update = {
+      $set: {
+        affirmationId: req.body._id,
+        email: req.user.local.email,
+      },
+    };
+    const options = { upsert: true };
+
+    db.collection('favorites').updateOne(
+      query,
+      update,
+      options,
+      (err, result) => {
+        res.send({ favorites: result });
+      },
+    );
+  });
+
+  app.post('/customAffirmations', isLoggedIn, function (req, res) {
+    db.collection('customAffirmations').save(
+      {
+        author: req.user.local.email,
+        negativeEmotion: req.body.negativeEmotion,
+        positiveAffirmation: req.body.positiveAffirmation,
+      },
+      (err, result) => {
+        if (err) return console.log(err);
+        res.send('OK');
+      },
+    );
+  });
+
+  // ========================== GET ==========================
 
   app.get('/profile', function (req, res) {
     db.collection('affirmations')
@@ -44,7 +100,7 @@ module.exports = function (app, passport, db) {
 
           res.send({ favorites });
         } else {
-          res.send('Page unavailable');
+          res.send({ favorites: [] });
         }
       });
   });
@@ -61,54 +117,29 @@ module.exports = function (app, passport, db) {
       });
   });
 
-  // uncomment and visit route to reseed database
-  // app.get('/seed', function (req, res) {
-  //   affirmations.forEach((affirmation) => {
-  //     db.collection('affirmations').save(affirmation);
-  //   });
-  //   res.render('nothing.ejs', {});
-  // });
+  app.get('/customAffirmations', function (req, res) {
+    db.collection('customAffirmations')
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
 
-  // PROFILE SECTION =========================
-  app.get('/profile', isLoggedIn, function (req, res) {
-    res.render('profile.ejs', { message: req.flash('profileMessage') });
+        res.send({
+          customAffirmations: result,
+        });
+      });
   });
 
-  // CUSTOMIZE SECTION =========================
-  app.get('/customize', isLoggedIn, function (req, res) {
-    res.render('customize.ejs', { message: req.flash('profileMessage') });
-  });
-
-
-  // FAVORITES SECTION =========================
-  app.put('/favorites', isLoggedIn, function (req, res) {
-    const query = { affirmationId: req.body.id, email: req.body.email };
-    const update = {
-      $set: {
-        affirmationId: req.body.id,
-        email: req.body.email,
-        isFavorite: !req.body.isFavorite, //if it is already favorite, it negates it
-      },
-    };
-    const options = { upsert: true };
-
-    db.collection('favorites').updateOne(
-      query,
-      update,
-      options,
-      (err, result) => {
-        res.send({ favorites: result });
-      },
-    );
-  });
+  // ========================== DELETE ==========================
 
   app.delete('/favorites', (req, res) => {
     db.collection('favorites').findOneAndDelete(
-      //findOneAndDelete is a function form MongoDb//
-      { _id: ObjectId(req.body._id) },
+      {
+        _id: ObjectId(req.body._id),
+        email: req.user.local.email,
+      },
       (err, result) => {
         if (err) return res.send(500, err);
-        res.send('Message deleted!');
+        res.send('Favorite deleted!');
       },
     );
   });

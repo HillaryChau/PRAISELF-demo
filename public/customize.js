@@ -1,14 +1,26 @@
-document.querySelector(".submit").addEventListener('click',postCustomAffirmation)
+document
+  .querySelector('.submitForm')
+  .addEventListener('submit', createCustomAffirmations);
 
+function createCustomAffirmations(event) {
+  event.preventDefault();
+  const positiveAffirmation = document.querySelector(
+    '.newPositiveThoughts > textarea',
+  ).value;
+  const negativeEmotion = document.querySelector('.newNegativeThoughts > input')
+    .value;
 
-const postCustomAffirmation = (event) =>{
-  const customPostId = event.target.dataset.value;
-  fetch("customAffirmation",{
+  fetch('customAffirmations', {
     method: 'post',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      customPostId: customPostId,
-    })
-
-  })
+      negativeEmotion,
+      positiveAffirmation,
+    }),
+  }).then(() => {
+    document.querySelector('.newPositiveThoughts > textarea').value = '';
+    document.querySelector('.newNegativeThoughts > input').value = '';
+    document.querySelector('.success-container').innerText =
+      'Custom affirmation successfully created';
+  });
 }
