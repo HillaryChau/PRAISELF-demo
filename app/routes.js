@@ -74,6 +74,12 @@ module.exports = function (app, passport, db) {
     res.render('profile.ejs', { message: req.flash('profileMessage') });
   });
 
+  // CUSTOMIZE SECTION =========================
+  app.get('/customize', isLoggedIn, function (req, res) {
+    res.render('customize.ejs', { message: req.flash('profileMessage') });
+  });
+
+
   // FAVORITES SECTION =========================
   app.put('/favorites', isLoggedIn, function (req, res) {
     const query = { affirmationId: req.body.id, email: req.body.email };
@@ -81,7 +87,7 @@ module.exports = function (app, passport, db) {
       $set: {
         affirmationId: req.body.id,
         email: req.body.email,
-        isFavorite: !req.body.isFavorite //if it is already favorite, it negates it
+        isFavorite: !req.body.isFavorite, //if it is already favorite, it negates it
       },
     };
     const options = { upsert: true };
@@ -97,16 +103,15 @@ module.exports = function (app, passport, db) {
   });
 
   app.delete('/favorites', (req, res) => {
-  db.collection('favorites').findOneAndDelete(  //findOneAndDelete is a function form MongoDb//
-    {_id: ObjectId(req.body.id) },
-    (err, result) => {
-      console.log("result",result)
-      if (err) return res.send(500, err);
-      res.send('Message deleted!');
-    },
-  );
-});
-
+    db.collection('favorites').findOneAndDelete(
+      //findOneAndDelete is a function form MongoDb//
+      { _id: ObjectId(req.body._id) },
+      (err, result) => {
+        if (err) return res.send(500, err);
+        res.send('Message deleted!');
+      },
+    );
+  });
 
   // LOGOUT ==============================
   app.get('/logout', function (req, res) {

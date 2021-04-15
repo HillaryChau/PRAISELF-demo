@@ -1,11 +1,34 @@
-function showPositiveFeeling(event) {
+document.addEventListener('DOMContentLoaded', (event) => {
+  new Promise(function (resolve, reject) {
+    setTimeout(() => resolve(1), 1); // (*)
+  })
+    .then(() => getFavorites())
+});
+
+function getFavorites() {
+  return fetch('favorites', {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      return res.json(); // response to turn it into a json object
+    })
+    .then((jsonObject) => {
+      window.favorites = jsonObject.favorites;
+    });
+}
+
+
+function renderAffirmationCard(event) {
   // window is a global variable in the browser,  in which we grab the affirmations collection from the DB
   // event.target.value shows the option value from negThoughts that's selected by the user
   // postiviveAffirmation.split('.')  this is being used since the positiveAffirmation is written as a super long string.
   // .map() transforms each sentence, with the <p> added to it.
-const heart = document.querySelector('.fa-heart')
+  const heart = document.querySelector('.fa-heart');
 
-  if (heart){
+  if (heart) {
     document.querySelector('.fa-heart').classList.remove('fa');
     document.querySelector('.fa-heart').classList.add('far');
   }
@@ -35,11 +58,10 @@ const heart = document.querySelector('.fa-heart')
   }
 }
 
-
 ///Adds Affiration from Home to display onto the profile page//
-function addFavorite(event) {
+function toggleFavorite(event) {
   const id = event.target.dataset.id; //this is the heart that's selected
-  const isFavorite = event.target.classList.contains('fa')//filled in heart that's selected
+  const isFavorite = event.target.classList.contains('fa'); //filled in heart that's selected
 
   fetch('favorites', {
     method: 'put',
@@ -47,29 +69,25 @@ function addFavorite(event) {
     body: JSON.stringify({
       id,
       email: window.email,
-      isFavorite: isFavorite
+      isFavorite: isFavorite,
     }),
   })
-    .then((res) => {
-      return res.json();
+    .then(() => {
+      return getFavorites();
     })
-    .then((responseObject) => {
-      window.favorites = responseObject.favorites;
-
-      if(document.querySelector('.fa-heart').classList.contains("fa")){
+    .then((jsonObject) => {
+      if (document.querySelector('.fa-heart').classList.contains('fa')) {
         document.querySelector('.fa-heart').classList.remove('fa');
         document.querySelector('.fa-heart').classList.add('far');
-      } else{
+      } else {
         document.querySelector('.fa-heart').classList.remove('far');
         document.querySelector('.fa-heart').classList.add('fa');
       }
-
-
     });
 }
 
 if (window.email) {
-  document.querySelector('.fa-heart').addEventListener('click', addFavorite);
+  document.querySelector('.fa-heart').addEventListener('click', toggleFavorite);
 
   document.addEventListener('DOMContentLoaded', (event) => {
     fetch('favorites', {
@@ -80,11 +98,13 @@ if (window.email) {
         return res.json();
       })
       .then((jsonObject) => {
-        window.favorites = jsonObject.favorites.map(favorites => favorites.affirmationId);
+        window.favorites = jsonObject.favorites.map(
+          (favorites) => favorites.affirmationId,
+        );
       });
   });
 }
 
 document
   .querySelector('#negFeeling')
-  .addEventListener('change', showPositiveFeeling);
+  .addEventListener('change', renderAffirmationCard);

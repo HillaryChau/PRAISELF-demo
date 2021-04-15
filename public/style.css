@@ -26,18 +26,29 @@ nav div {
   margin-bottom: 20px;
   float: left;
 }
-
 .affirmationsCard {
-  text-align: left;
-  border: 2px solid blue;
-  padding: 5px;
-  border-radius: 5px;
-  margin: 10px;
-  background: aliceblue;
-  width: 400px;
+    text-align: left;
+    border: 2px solid blue;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    background: aliceblue;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
 }
 
+
+i.fa.fa-times {
+    margin-left: auto;
+}
+
+i.fa.fa-times:hover{
+  color: magenta;
+  cursor:pointer;
+}
+
+
 .hide {
-  /* visibility: hidden; */
   display: none;
 }
