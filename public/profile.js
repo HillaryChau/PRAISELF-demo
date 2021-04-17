@@ -67,7 +67,6 @@ function renderAffirmationCard(affirmation, favorite) {
   document.querySelector('.favorites').append(card);
 }
 
-// this is to add the favorites from the home page //
 function deleteFavorite(event) {
   const affirmationId = event.target.getAttribute('data-affirmation-id');
   const favoriteId = event.target.getAttribute('data-favorite-id');
@@ -77,6 +76,26 @@ function deleteFavorite(event) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       _id: favoriteId,
+    }),
+  }).then((responseObject) => {
+    document
+      .querySelector(
+        `.affirmationsCard[data-affirmation-id="${affirmationId}"]`,
+      )
+      .classList.add('hide');
+  });
+}
+
+
+function deleteCustomAffirmation(event) {
+  const affirmationId = event.target.getAttribute('data-affirmation-id');
+  const favoriteId = event.target.getAttribute('data-favorite-id');
+
+  fetch('customAffirmations', {
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      _id: affirmationId,
     }),
   }).then((responseObject) => {
     document
