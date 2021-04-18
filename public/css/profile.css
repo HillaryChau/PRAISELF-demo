@@ -3,6 +3,11 @@
   justify-content: center;
 }
 
+a{
+    text-decoration: none;
+    color: black;
+}
+
 .favorites-container,
 .custom-affirmations-container {
   display: flex;

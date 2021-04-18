@@ -6,6 +6,8 @@
       <link rel="stylesheet" href="css/style.css">
       <title>PRAISELF</title>
    </head>
+
+   <div class="center-page">
    <nav>
       <div class="home"><a href="/">Home</a></div>
       <% if (user) { %>
@@ -15,6 +17,7 @@
       <div class="login"><a href="/login">Login</a></div>
       <div class="login"><a href="/signup">Sign Up</a></div>
    </nav>
+
    <main>
       <h1>PRAISELF</h1>
       <div class="negative-thoughts">
@@ -30,6 +33,8 @@
          <% } %>
       </div>
    </main>
+ </div>
+
    <% if (user) { %>
    <script>
       window.email = "<%= user.local.email %>";

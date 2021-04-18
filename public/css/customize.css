@@ -8,3 +8,8 @@ textarea {
   width: 82.5%;
   height: 200px;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
