@@ -1,7 +1,7 @@
 function getFavorites() {
   if (!window.email) {
     window.favorites = [];
-    return Promise.resolve()
+    return Promise.resolve();
   }
   return fetch('favorites', {
     method: 'get',
@@ -16,7 +16,7 @@ function getFavorites() {
       window.favorites = jsonObject.favorites;
     });
 }
-// To display favorite affirmations on the profile page//
+
 function getAffirmations() {
   return fetch('affirmations', {
     method: 'get',
@@ -46,4 +46,4 @@ function getCustomAffirmations() {
       window.customAffirmations = jsonObject.customAffirmations;
       return jsonObject.customAffirmations;
     });
-}git
+}

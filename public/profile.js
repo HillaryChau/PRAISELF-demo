@@ -1,40 +1,68 @@
 document.addEventListener('DOMContentLoaded', (event) => {
   new Promise(function (resolve, reject) {
-    setTimeout(() => resolve(1), 1); // (*)
+    setTimeout(() => resolve(1), 1);
   })
     .then(() => getFavorites())
     .then(() => getAffirmations())
-    .then((affirmations) => renderAffirmationCards(affirmations))
+    .then((affirmations) => renderDefaultAffirmations(affirmations))
     .then(() => getCustomAffirmations())
-    .then((affirmations) => renderAffirmationCards(affirmations))
+    .then((customAffirmations) => renderCustomAffirmations(customAffirmations))
     .then(() => addListeners());
 });
 
 function addListeners() {
-  document.querySelectorAll('.fa-times').forEach((deleteButton) => {
+  document.querySelectorAll('.delete-favorite-button').forEach((deleteButton) => {
     deleteButton.addEventListener('click', deleteFavorite);
+  });
+
+  document.querySelectorAll('.delete-affirmation-button').forEach((deleteButton) => {
+    deleteButton.addEventListener('click', deleteCustomAffirmation);
   });
 }
 
-function renderAffirmationCards(affirmations) {
+function renderCustomAffirmations(customAffirmations) {
+  customAffirmations
+    .filter((customAffirmation) => {
+      // filter customAffirmations to only include
+      // ones that were created by signed in author
+
+      return customAffirmation.author === window.email;
+    })
+    .forEach((customAffirmation) => {
+      const favorite =
+        window.favorites.find(
+          (favoriteObject) => favoriteObject.affirmationId === customAffirmation._id,
+        ) || {};
+
+      renderAffirmationCard({
+        affirmation: customAffirmation,
+        favorite,
+        isCustomAffirmation: true,
+      });
+    });
+}
+
+function renderDefaultAffirmations(affirmations) {
   affirmations
     .filter((affirmation) => {
       // check if affirmationID matches favorite
       // keep affirmations that have are favorites
-      return window.favorites
-        .map((favorite) => favorite.affirmationId)
-        .includes(affirmation._id);
+      return window.favorites.map((favorite) => favorite.affirmationId).includes(affirmation._id);
     })
     .forEach((affirmation) => {
-      const favorite = favorites.find(
+      const favorite = window.favorites.find(
         (favoriteObject) => favoriteObject.affirmationId === affirmation._id,
       );
 
-      renderAffirmationCard(affirmation, favorite);
+      renderAffirmationCard({
+        affirmation,
+        favorite,
+        isCustomAffirmation: false,
+      });
     });
 }
 
-function renderAffirmationCard(affirmation, favorite) {
+function renderAffirmationCard({ affirmation, favorite, isCustomAffirmation }) {
   const positiveText = affirmation.positiveAffirmation
     .split('.')
     .map((sentence) => {
@@ -42,34 +70,60 @@ function renderAffirmationCard(affirmation, favorite) {
     })
     .join('');
 
-  const card = document.createElement('div');
-  const negFeelingHeader = document.createElement('h3');
-  const positiveThoughts = document.createElement('p');
-  const trash = document.createElement('i');
+  const affirmationCard = document.createElement('div');
+  const buttonsContainer = document.createElement('div');
+  const deleteFavoriteBtn = document.createElement('button');
+  const deleteAffirmationBtn = document.createElement('button');
+  const negFeelingHeaderText = document.createElement('h3');
+  const positiveThoughtsText = document.createElement('p');
 
-  card.setAttribute('data-affirmation-id', affirmation._id);
-  trash.setAttribute('data-affirmation-id', affirmation._id);
-  trash.setAttribute('data-favorite-id', favorite._id);
+  const buttons = [deleteFavoriteBtn, deleteAffirmationBtn];
 
-  card.classList.add('affirmationsCard');
-  negFeelingHeader.classList.add('negFeelingHeader');
-  positiveThoughts.classList.add('positiveThoughts');
-  trash.classList.add('fa');
-  trash.classList.add('fa-times');
+  affirmationCard.setAttribute('data-affirmation-id', affirmation._id);
 
-  negFeelingHeader.innerHTML = affirmation.negativeEmotion;
-  positiveThoughts.innerHTML = positiveText;
+  buttons.forEach((btn) => {
+    btn.setAttribute('data-affirmation-id', affirmation._id);
+    btn.setAttribute('data-favorite-id', favorite._id);
+    btn.setAttribute('data-custom-affirmation', isCustomAffirmation ? true : false);
+  });
 
-  card.append(trash);
-  card.append(negFeelingHeader);
-  card.append(positiveThoughts);
+  buttonsContainer.classList.add('buttons-container');
+  affirmationCard.classList.add('affirmation-card');
+  negFeelingHeaderText.classList.add('neg-feeling-header');
+  positiveThoughtsText.classList.add('positive-thoughts');
+  deleteFavoriteBtn.classList.add('delete-favorite-button');
+  deleteAffirmationBtn.classList.add('delete-affirmation-button');
 
-  document.querySelector('.favorites').append(card);
+  deleteFavoriteBtn.innerHTML = 'Delete Favorite';
+  negFeelingHeaderText.innerHTML = affirmation.negativeEmotion;
+  positiveThoughtsText.innerHTML = positiveText;
+
+  affirmationCard.append(buttonsContainer);
+
+  if (favorite._id) {
+    buttonsContainer.append(deleteFavoriteBtn);
+  }
+
+  if (isCustomAffirmation) {
+    deleteAffirmationBtn.innerHTML = 'Delete Affirmation';
+    buttonsContainer.append(deleteAffirmationBtn);
+  }
+
+  affirmationCard.append(negFeelingHeaderText);
+  affirmationCard.append(positiveThoughtsText);
+  affirmationCard.append(buttonsContainer);
+
+  if (isCustomAffirmation) {
+    document.querySelector('.custom-affirmations').append(affirmationCard);
+  } else {
+    document.querySelector('.favorites').append(affirmationCard);
+  }
 }
 
 function deleteFavorite(event) {
   const affirmationId = event.target.getAttribute('data-affirmation-id');
   const favoriteId = event.target.getAttribute('data-favorite-id');
+  const isCustomAffirmation = event.target.getAttribute('data-custom-affirmation');
 
   fetch('favorites', {
     method: 'delete',
@@ -77,19 +131,21 @@ function deleteFavorite(event) {
     body: JSON.stringify({
       _id: favoriteId,
     }),
-  }).then((responseObject) => {
-    document
-      .querySelector(
-        `.affirmationsCard[data-affirmation-id="${affirmationId}"]`,
-      )
-      .classList.add('hide');
+  }).then(() => {
+    if (isCustomAffirmation === 'true') {
+      document
+        .querySelector(`.delete-favorite-button[data-affirmation-id="${affirmationId}"]`)
+        .classList.add('hide');
+    } else {
+      document
+        .querySelector(`.affirmation-card[data-affirmation-id="${affirmationId}"]`)
+        .classList.add('hide');
+    }
   });
 }
 
-
 function deleteCustomAffirmation(event) {
   const affirmationId = event.target.getAttribute('data-affirmation-id');
-  const favoriteId = event.target.getAttribute('data-favorite-id');
 
   fetch('customAffirmations', {
     method: 'delete',
@@ -97,11 +153,9 @@ function deleteCustomAffirmation(event) {
     body: JSON.stringify({
       _id: affirmationId,
     }),
-  }).then((responseObject) => {
+  }).then(() => {
     document
-      .querySelector(
-        `.affirmationsCard[data-affirmation-id="${affirmationId}"]`,
-      )
+      .querySelector(`.affirmation-card[data-affirmation-id="${affirmationId}"]`)
       .classList.add('hide');
   });
 }

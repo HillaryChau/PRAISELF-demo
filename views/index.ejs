@@ -3,7 +3,7 @@
    <head>
       <meta charset="UTF-8">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="css/style.css">
       <title>PRAISELF</title>
    </head>
    <nav>
@@ -17,14 +17,14 @@
    </nav>
    <main>
       <h1>PRAISELF</h1>
-      <div class="negativeThoughts">
+      <div class="negative-thoughts">
          <select aria-label="Choose Your Feeling" name="negFeeling" id="negFeeling" title="negFeeling" class="negFeeling">
             <option>Choose an option</option>
          </select>
       </div>
-      <div class="affirmationsCard hide">
-         <div class="negFeelingHeader"></div>
-         <div class="positiveThoughts"></div>
+      <div class="affirmation-card hide">
+         <div class="neg-feeling-header"></div>
+         <div class="positive-thoughts"></div>
          <% if (user) { %>
          <i class="far fa-heart hide" style="font-size: 40px;"></i>
          <% } %>

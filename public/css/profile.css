@@ -1,0 +1,11 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+}
+
+.favorites-container,
+.custom-affirmations-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}

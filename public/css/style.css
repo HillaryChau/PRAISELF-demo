@@ -1,0 +1,44 @@
+body {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+nav div {
+  margin: 0 20px;
+}
+
+.favorite-affirmation,
+.custom-affirmation {
+  background: grey;
+  height: 300px;
+  width: 300px;
+  margin-bottom: 20px;
+  float: left;
+}
+
+.affirmation-card {
+  text-align: left;
+  border: 2px solid blue;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 10px;
+  background: aliceblue;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hide {
+  display: none;
+}

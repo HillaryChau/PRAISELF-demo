@@ -48,14 +48,9 @@ module.exports = function (app, passport, db) {
     };
     const options = { upsert: true };
 
-    db.collection('favorites').updateOne(
-      query,
-      update,
-      options,
-      (err, result) => {
-        res.send({ favorites: result });
-      },
-    );
+    db.collection('favorites').updateOne(query, update, options, (err, result) => {
+      res.send({ favorites: result });
+    });
   });
 
   app.post('/customAffirmations', isLoggedIn, function (req, res) {
@@ -94,9 +89,7 @@ module.exports = function (app, passport, db) {
         if (err) return console.log(err);
 
         if (req.user) {
-          const favorites = result.filter(
-            (e) => e.email === req.user.local.email,
-          );
+          const favorites = result.filter((e) => e.email === req.user.local.email);
 
           res.send({ favorites });
         } else {
@@ -136,6 +129,19 @@ module.exports = function (app, passport, db) {
       {
         _id: ObjectId(req.body._id),
         email: req.user.local.email,
+      },
+      (err, result) => {
+        if (err) return res.send(500, err);
+        res.send('Favorite deleted!');
+      },
+    );
+  });
+
+  app.delete('/customAffirmations', (req, res) => {
+    db.collection('customAffirmations').findOneAndDelete(
+      {
+        _id: ObjectId(req.body._id),
+        author: req.user.local.email,
       },
       (err, result) => {
         if (err) return res.send(500, err);

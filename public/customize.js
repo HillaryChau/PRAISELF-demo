@@ -1,14 +1,9 @@
-document
-  .querySelector('.submitForm')
-  .addEventListener('submit', createCustomAffirmations);
+document.querySelector('.submit-form').addEventListener('submit', createCustomAffirmations);
 
 function createCustomAffirmations(event) {
   event.preventDefault();
-  const positiveAffirmation = document.querySelector(
-    '.newPositiveThoughts > textarea',
-  ).value;
-  const negativeEmotion = document.querySelector('.newNegativeThoughts > input')
-    .value;
+  const positiveAffirmation = document.querySelector('.new-positive-thoughts > textarea').value;
+  const negativeEmotion = document.querySelector('.new-negative-thoughts > input').value;
 
   fetch('customAffirmations', {
     method: 'post',

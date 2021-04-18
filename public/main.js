@@ -7,43 +7,36 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   })
     .then(() => getFavorites())
     .then(() => getAffirmations())
-    .then((affirmations) => renderAffirmationOptions(affirmations))
     .then(() => getCustomAffirmations())
-    .then((affirmations) => renderCustomAffirmationOptions(affirmations))
+    .then(() => renderOptions())
     .then(() => addListeners());
 });
 
 function addListeners() {
   if (window.email) {
-    document
-      .querySelector('.fa-heart')
-      .addEventListener('click', toggleFavorite);
+    document.querySelector('.fa-heart').addEventListener('click', toggleFavorite);
   }
 
-  document
-    .querySelector('#negFeeling')
-    .addEventListener('change', renderAffirmationCard);
+  document.querySelector('#negFeeling').addEventListener('change', renderAffirmationCard);
 }
 
-function renderAffirmationOptions(affirmations) {
+function renderOptions() {
+  const affirmations = [...window.defaultAffirmations, ...window.customAffirmations];
+
   for (let index = 0; index < affirmations.length; index++) {
     const affirmation = affirmations[index];
     const option = document.createElement('option');
+    const isFavorite = window.favorites.map((fav) => fav.affirmationId).includes(affirmation._id);
+
     option.setAttribute('value', index);
-    option.setAttribute('data-affirmation', 'default');
-    option.innerText = affirmation.negativeEmotion;
+    option.setAttribute('data-affirmation-id', affirmation._id);
 
-    document.querySelector('#negFeeling').appendChild(option);
-  }
-}
-
-function renderCustomAffirmationOptions(affirmations) {
-  for (let index = 0; index < affirmations.length; index++) {
-    const affirmation = affirmations[index];
-    const option = document.createElement('option');
-    option.setAttribute('value', index + 20); // customAffirmations start at 20
-    option.setAttribute('data-affirmation', 'custom');
-    option.innerText = affirmation.negativeEmotion;
+    if (window.email) {
+      const heartIcon = isFavorite ? '💚' : '🤍';
+      option.innerText = heartIcon + affirmation.negativeEmotion;
+    } else {
+      option.innerText = affirmation.negativeEmotion;
+    }
 
     document.querySelector('#negFeeling').appendChild(option);
   }
@@ -60,12 +53,8 @@ function renderAffirmationCard(event) {
     document.querySelector('.fa-heart').classList.remove('fa');
     document.querySelector('.fa-heart').classList.add('far');
   }
-
-  const isDefaultAffirmation = event.target.value < 20;
-
-  const affirmation = isDefaultAffirmation
-    ? window.defaultAffirmations[event.target.value]
-    : window.customAffirmations[event.target.value - 20];
+  const affirmations = [...window.defaultAffirmations, ...window.customAffirmations];
+  const affirmation = affirmations[event.target.value];
 
   const positiveText = affirmation.positiveAffirmation
     .split('.')
@@ -76,24 +65,18 @@ function renderAffirmationCard(event) {
   const negativeText = `<h3>${affirmation.negativeEmotion}.<h3>`;
   const affirmationId = affirmation._id.toString();
 
-  document.querySelector('.negFeelingHeader').innerHTML = negativeText;
-  document.querySelector('.positiveThoughts').innerHTML = positiveText;
-  document.querySelector('.affirmationsCard').classList.remove('hide');
+  document.querySelector('.neg-feeling-header').innerHTML = negativeText;
+  document.querySelector('.positive-thoughts').innerHTML = positiveText;
+  document.querySelector('.affirmation-card').classList.remove('hide');
 
   if (window.email) {
-    const favoriteAffirmation = window.favorites.find(
-      (fav) => fav.affirmationId === affirmationId,
-    );
+    const favoriteAffirmation = window.favorites.find((fav) => fav.affirmationId === affirmationId);
 
     document.querySelector('.fa-heart').classList.remove('hide');
-    document
-      .querySelector('.fa-heart')
-      .setAttribute('data-affirmation-id', affirmationId);
+    document.querySelector('.fa-heart').setAttribute('data-affirmation-id', affirmationId);
 
     if (favoriteAffirmation) {
-      document
-        .querySelector('.fa-heart')
-        .setAttribute('data-favorite-id', favoriteAffirmation._id);
+      document.querySelector('.fa-heart').setAttribute('data-favorite-id', favoriteAffirmation._id);
       document.querySelector('.fa-heart').classList.remove('far');
       document.querySelector('.fa-heart').classList.add('fa');
     }
@@ -113,8 +96,11 @@ function toggleFavorite(event) {
         _id: favoriteId,
       }),
     })
+      .then(() => (document.querySelector('#negFeeling').innerHTML = ''))
       .then(() => getFavorites())
+      .then(() => renderOptions())
       .then(() => {
+        document.querySelector(`option[data-affirmation-id="${affirmationId}"]`).selected = true;
         document.querySelector('.fa-heart').classList.remove('fa');
         document.querySelector('.fa-heart').classList.add('far');
       });
@@ -125,9 +111,14 @@ function toggleFavorite(event) {
       body: JSON.stringify({
         _id: affirmationId,
       }),
-    }).then(() => {
-      document.querySelector('.fa-heart').classList.remove('far');
-      document.querySelector('.fa-heart').classList.add('fa');
-    });
+    })
+      .then(() => (document.querySelector('#negFeeling').innerHTML = ''))
+      .then(() => getFavorites())
+      .then(() => renderOptions())
+      .then(() => {
+        document.querySelector(`option[data-affirmation-id="${affirmationId}"]`).selected = true;
+        document.querySelector('.fa-heart').classList.remove('far');
+        document.querySelector('.fa-heart').classList.add('fa');
+      });
   }
 }
