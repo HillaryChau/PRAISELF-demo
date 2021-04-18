@@ -13,8 +13,8 @@ function createCustomAffirmations(event) {
       positiveAffirmation,
     }),
   }).then(() => {
-    document.querySelector('.newPositiveThoughts > textarea').value = '';
-    document.querySelector('.newNegativeThoughts > input').value = '';
+    document.querySelector('.new-positive-thoughts > textarea').value = '';
+    document.querySelector('.new-negative-thoughts > input').value = '';
     document.querySelector('.success-container').innerText =
       'Custom affirmation successfully created';
   });
