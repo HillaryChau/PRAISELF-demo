@@ -6,6 +6,7 @@ body {
   background-size: cover;
   margin: 0;
 }
+
 .center-page{
   background-color: aliceblue;
   margin: 0 20%;
@@ -28,8 +29,17 @@ main {
   justify-content: center;
   align-items: center;
 }
+
 nav div {
   margin: 0 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: scale(1.1);
 }
 
 .favorite-affirmation,
@@ -55,4 +65,77 @@ nav div {
 
 .hide {
   display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+
+/* MODAL CSS */
+
+.share-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.share-modal-card {
+  width: 400px;
+  height: 300px;
+  background-color: white;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.share-buttons-container {
+  margin-top: 20px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

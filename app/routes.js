@@ -1,5 +1,11 @@
-const ObjectId = require('mongodb').ObjectId; // finding records (records = mongodb objects) with a specific id
-const affirmations = require('./affirmations');
+const ObjectId = require("mongodb").ObjectId; // finding records (records = mongodb objects) with a specific id
+const affirmations = require("./affirmations");
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+
+
 
 module.exports = function (app, passport, db) {
   // ========================== SEEDING ==========================
@@ -12,30 +18,40 @@ module.exports = function (app, passport, db) {
   //   res.render('nothing.ejs', {});
   // });
 
+  // ========================== TWILIO ==========================
+
+  app.get("/twilio", function (req, res) {
+    client.messages
+      .create({ body: "Hi hillary check your phone now!", from: "+12013807615", to: "+18572336392" })
+      .then((message) => console.log(message.sid));
+
+      res.send('hello')
+  });
+
   // ========================== PAGES ==========================
 
   // show the home page (will also have our login links)
-  app.get('/', function (req, res) {
-    res.render('index.ejs', {
+  app.get("/", function (req, res) {
+    res.render("index.ejs", {
       user: req.user,
     });
   });
 
-  app.get('/profile', isLoggedIn, function (req, res) {
-    res.render('profile.ejs', {
+  app.get("/profile", isLoggedIn, function (req, res) {
+    res.render("profile.ejs", {
       user: req.user,
     });
   });
 
-  app.get('/customize', isLoggedIn, function (req, res) {
-    res.render('customize.ejs', {
+  app.get("/customize", isLoggedIn, function (req, res) {
+    res.render("customize.ejs", {
       user: req.user,
     });
   });
 
   // ========================== POST / PUT ==========================
 
-  app.put('/favorites', isLoggedIn, function (req, res) {
+  app.put("/favorites", isLoggedIn, function (req, res) {
     const query = {
       affirmationId: req.body._id,
       email: req.user.local.email,
@@ -48,13 +64,18 @@ module.exports = function (app, passport, db) {
     };
     const options = { upsert: true };
 
-    db.collection('favorites').updateOne(query, update, options, (err, result) => {
-      res.send({ favorites: result });
-    });
+    db.collection("favorites").updateOne(
+      query,
+      update,
+      options,
+      (err, result) => {
+        res.send({ favorites: result });
+      }
+    );
   });
 
-  app.post('/customAffirmations', isLoggedIn, function (req, res) {
-    db.collection('customAffirmations').save(
+  app.post("/customAffirmations", isLoggedIn, function (req, res) {
+    db.collection("customAffirmations").save(
       {
         author: req.user.local.email,
         negativeEmotion: req.body.negativeEmotion,
@@ -62,34 +83,36 @@ module.exports = function (app, passport, db) {
       },
       (err, result) => {
         if (err) return console.log(err);
-        res.send('OK');
-      },
+        res.send("OK");
+      }
     );
   });
 
   // ========================== GET ==========================
 
-  app.get('/profile', function (req, res) {
-    db.collection('affirmations')
+  app.get("/profile", function (req, res) {
+    db.collection("affirmations")
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
 
-        res.render('profile.ejs', {
+        res.render("profile.ejs", {
           user: req.user,
           affirmations: result,
         });
       });
   });
 
-  app.get('/favorites', function (req, res) {
-    db.collection('favorites')
+  app.get("/favorites", function (req, res) {
+    db.collection("favorites")
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
 
         if (req.user) {
-          const favorites = result.filter((e) => e.email === req.user.local.email);
+          const favorites = result.filter(
+            (e) => e.email === req.user.local.email
+          );
 
           res.send({ favorites });
         } else {
@@ -98,8 +121,8 @@ module.exports = function (app, passport, db) {
       });
   });
 
-  app.get('/affirmations', function (req, res) {
-    db.collection('affirmations')
+  app.get("/affirmations", function (req, res) {
+    db.collection("affirmations")
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
@@ -110,8 +133,8 @@ module.exports = function (app, passport, db) {
       });
   });
 
-  app.get('/customAffirmations', function (req, res) {
-    db.collection('customAffirmations')
+  app.get("/customAffirmations", function (req, res) {
+    db.collection("customAffirmations")
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
@@ -124,36 +147,36 @@ module.exports = function (app, passport, db) {
 
   // ========================== DELETE ==========================
 
-  app.delete('/favorites', (req, res) => {
-    db.collection('favorites').findOneAndDelete(
+  app.delete("/favorites", (req, res) => {
+    db.collection("favorites").findOneAndDelete(
       {
         _id: ObjectId(req.body._id),
         email: req.user.local.email,
       },
       (err, result) => {
         if (err) return res.send(500, err);
-        res.send('Favorite deleted!');
-      },
+        res.send("Favorite deleted!");
+      }
     );
   });
 
-  app.delete('/customAffirmations', (req, res) => {
-    db.collection('customAffirmations').findOneAndDelete(
+  app.delete("/customAffirmations", (req, res) => {
+    db.collection("customAffirmations").findOneAndDelete(
       {
         _id: ObjectId(req.body._id),
         author: req.user.local.email,
       },
       (err, result) => {
         if (err) return res.send(500, err);
-        res.send('Favorite deleted!');
-      },
+        res.send("Favorite deleted!");
+      }
     );
   });
 
   // LOGOUT ==============================
-  app.get('/logout', function (req, res) {
+  app.get("/logout", function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect("/");
   });
 
   // =============================================================================
@@ -163,34 +186,34 @@ module.exports = function (app, passport, db) {
   // locally --------------------------------
   // LOGIN ===============================
   // show the login form
-  app.get('/login', function (req, res) {
-    res.render('login.ejs', { message: req.flash('loginMessage') });
+  app.get("/login", function (req, res) {
+    res.render("login.ejs", { message: req.flash("loginMessage") });
   });
 
   // process the login form
   app.post(
-    '/login',
-    passport.authenticate('local-login', {
-      successRedirect: '/profile', // redirect to the secure profile section
-      failureRedirect: '/login', // redirect back to the signup page if there is an error
+    "/login",
+    passport.authenticate("local-login", {
+      successRedirect: "/profile", // redirect to the secure profile section
+      failureRedirect: "/login", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash order
-    }),
+    })
   );
 
   // SIGNUP =================================
   // show the signup form
-  app.get('/signup', function (req, res) {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
+  app.get("/signup", function (req, res) {
+    res.render("signup.ejs", { message: req.flash("signupMessage") });
   });
 
   // process the signup form
   app.post(
-    '/signup',
-    passport.authenticate('local-signup', {
-      successRedirect: '/profile', // redirect to the secure profile section
-      failureRedirect: '/signup', // redirect back to the signup page if there is an error
+    "/signup",
+    passport.authenticate("local-signup", {
+      successRedirect: "/profile", // redirect to the secure profile section
+      failureRedirect: "/signup", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash order
-    }),
+    })
   );
 
   // =============================================================================
@@ -201,12 +224,12 @@ module.exports = function (app, passport, db) {
   // user account will stay active in case they want to reconnect in the future
 
   // local -----------------------------------
-  app.get('/unlink/local', isLoggedIn, function (req, res) {
+  app.get("/unlink/local", isLoggedIn, function (req, res) {
     var user = req.user;
     user.local.email = undefined;
     user.local.password = undefined;
     user.save(function (err) {
-      res.redirect('/profile');
+      res.redirect("/profile");
     });
   });
 };
@@ -215,5 +238,5 @@ module.exports = function (app, passport, db) {
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
 
-  res.redirect('/');
+  res.redirect("/");
 }

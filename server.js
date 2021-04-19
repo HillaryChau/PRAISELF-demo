@@ -15,6 +15,10 @@ var cookieParser = require('cookie-parser'); //session keep person logged in
 var bodyParser   = require('body-parser');// get elements out of req body,
 var session      = require('express-session');//stay user stay logged in
 
+require('dotenv').config()
+
+
+
 var configDB = require('./config/database.js');
 
 var db
@@ -52,3 +56,4 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // launch ======================================================================
 app.listen(port);
 console.log('The magic happens on port ' + port);
+
