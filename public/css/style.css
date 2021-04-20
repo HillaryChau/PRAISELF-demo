@@ -7,10 +7,11 @@ body {
   margin: 0;
 }
 
-.center-page{
-  background-color: aliceblue;
-  margin: 0 20%;
-  min-height: 100vh;
+.center-page {
+    background-color: rgba(255,255,255,0.8);
+    margin: 0 20%;
+    min-height: 100vh;
+    padding-top: 2%;
 }
 
 a {
@@ -34,6 +35,19 @@ nav div {
   margin: 0 20px;
 }
 
+button.share-button {
+    width: 77px;
+    background: darkorange;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 7px;
+}
+
+h3{
+  font-size: 25px;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -51,16 +65,17 @@ nav div {
   float: left;
 }
 
+
 .affirmation-card {
-  text-align: left;
-  border: 2px solid blue;
-  padding: 5px;
-  border-radius: 5px;
-  margin: 10px;
-  background: rgba(255,255,255,0.8);
-  width: 400px;
-  display: flex;
-  flex-direction: column;
+    text-align: left;
+    padding: 20px 40px;
+    border-radius: 5px;
+    margin: 10px;
+    background: rgba(255,255,255,1);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 3px 0;
 }
 
 .hide {

@@ -31,15 +31,17 @@ function onCopy() {
   tooltip.innerHTML = "Copied: " + copyText.value;
 }
 
+///SMS function//
+
 function onClickSms() {
   fetch("twilio", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       link: window.link,
+      phoneNumber: phoneNumber
     }),
   }).then(() => {
-    //
   });
 }
 
