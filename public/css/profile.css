@@ -14,3 +14,20 @@ a{
   flex-direction: column;
   min-width: 300px;
 }
+
+
+button{
+  width: 77px;
+  color: black;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+  /* background: darkorange;
+  color: white; */
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+}
+
+button:hover{
+  color: #fff;
+}
