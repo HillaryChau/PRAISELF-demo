@@ -108,7 +108,7 @@ function renderAffirmationCard(event) {
   // postiviveAffirmation.split('.')  this is being used since the positiveAffirmation is written as a super long string.
   // .map() transforms each sentence, with the <p> added to it.
   const heart = document.querySelector(".fa-heart");
-  window.link = `${window.location.origin}?id=${affirmationId}`;
+
 
   if (heart) {
     document.querySelector(".fa-heart").classList.remove("fa");
@@ -128,10 +128,11 @@ function renderAffirmationCard(event) {
     .join("");
   const negativeText = `<h3>${affirmation.negativeEmotion}.<h3>`;
   const affirmationId = affirmation._id.toString();
+  window.link = `${window.location.origin}?id=${affirmationId}`;
 
   document.querySelector(".neg-feeling-header").innerHTML = negativeText;
   document.querySelector(".positive-thoughts").innerHTML = positiveText;
-  document.querySelector(".share-link").value = shareLink;
+  document.querySelector(".share-link").value = window.link;
   document.querySelector(".affirmation-card").classList.remove("hide");
   const subject = `PRAISELF: Here's a positive affirmation for you!`.replaceAll(
     " ",
@@ -143,6 +144,7 @@ function renderAffirmationCard(event) {
   );
   const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`;
   document.querySelector(".gmail-link").href = gmailLink;
+
 
   if (window.email) {
     const favoriteAffirmation = window.favorites.find(
