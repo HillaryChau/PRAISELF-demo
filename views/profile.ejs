@@ -3,21 +3,29 @@
    <head>
       <title>PRAISELF</title>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="css/style.css">
       <link rel="stylesheet" href="css/profile.css">
+      <link rel="stylesheet" href="css/generic.css">
+      <link rel="stylesheet" href="css/affirmation-card.css">
+      <link rel="stylesheet" href="css/custom-buttons.css">
    </head>
    <body>
-      <nav>
+      <nav class="nav-bar">
          <div class="home"><a href="/">Home</a></div>
          <div class="customize"><a href="/customize">Customize</a></div>
          <div class="profile"><a href="/profile">Profile</a></div>
          <div class="login"><a href="/login">Login</a></div>
          <div class="login"><a href="/signup">Sign Up</a></div>
+         <% if (user) { %>
+         <div class="login"><a href="/logout">Log Out</a></div>
+         <% } %>
       </nav>
       <main>
       <h1>PRAISELF</h1>
+      <% if (user) { %>
       <h2>Profile Page</h2>
-        <a href="/logout"><button>Logout</button></a>
       <div class="profile-page">
          <div class="favorites-container">
             <h3>FAVORITES</h3>
@@ -28,6 +36,10 @@
             <div class="custom-affirmations"></div>
          </div>
       </div>
+      <% } else { %>
+         <h3>Please log in to use this page. :)</h3>
+      <% } %>
+      </main>
       <% if (user) { %>
       <script>
          window.email = "<%= user.local.email %>";

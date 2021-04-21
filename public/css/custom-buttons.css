@@ -1,0 +1,75 @@
+/* Custom Icon Button with Text */
+
+.custom-button {
+  width: 150px;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+  transition: 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-button > i {
+  padding: 0 5px;
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+}
+
+/* Colors for Custom Icon Buttons with Text */
+
+.orange {
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.orange:hover {
+  background-color: #eb941b;
+  border-color: #eb941b;
+}
+
+.red {
+  background-color: #f04e4e;
+  border-color: #f04e4e;
+}
+
+.red:hover {
+  background-color: #ee3333;
+  border-color: #ee3333;
+}
+
+.dark-red {
+  background-color: #760909;
+  border-color: #760909;
+}
+
+.dark-red:hover {
+  background-color: #ee3333;
+  border-color: #ee3333;
+}
+
+.dark-grey {
+  color: white;
+  background-color: #434040;
+  border-color: #434040;
+}
+
+.dark-grey:hover {
+  color: white;
+  background-color: #716d6d;
+  border-color: #716d6d;
+}
+
+.green {
+  background-color: #71f04e;
+  border-color: #71f04e;
+}
+
+.green:hover {
+  background-color: #41a425;
+  border-color: #41a425;
+}

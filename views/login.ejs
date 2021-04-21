@@ -2,34 +2,29 @@
 <html>
   <head>
     <title>PRAISELF</title>
-    <link
-      rel="stylesheet"
-      href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/generic.css">
   </head>
   <body>
-    <nav>
+    <nav class="nav-bar">
       <div class="home"><a href="/">Home</a></div>
       <div class="customize"><a href="/customize">Customize</a></div>
       <div class="profile"><a href="/profile">Profile</a></div>
       <div class="login"><a href="/login">Login</a></div>
       <div class="login"><a href="/signup">Sign Up</a></div>
+      <% if (user) { %>
+      <div class="logout"><a href="/logout">Log Out</a></div>
+      <% } %>
     </nav>
 
     <h1>PRAISELF</h1>
 
     <div class="container">
       <div class="col-sm-6 col-sm-offset-3">
-        <h1><span class="fa fa-sign-in"></span> Login</h1>
-
-        <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
+        <h2><span class="fa fa-sign-in"></span>Login</h2>
 
         <!-- LOGIN FORM -->
         <form action="/login" method="post">

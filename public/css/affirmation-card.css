@@ -1,0 +1,46 @@
+.favorites-container,
+.custom-affirmations-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.affirmation-card {
+  text-align: left;
+  padding: 20px 40px;
+  border-radius: 5px;
+  margin: 10px;
+  background: rgba(255, 255, 255, 1);
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 3px 0;
+}
+
+.card-buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-buttons-container > * {
+  margin: 0 5px;
+}
+
+.custom-affirmation,
+.favorite-affirmation {
+  background: grey;
+  height: 300px;
+  width: 300px;
+  margin-bottom: 20px;
+  float: left;
+}
+
+.neg-feeling-header {
+  font-weight: 900;
+  font-size: 30px;
+  margin: 10px 0;
+}
+
+.positive-thoughts {
+  margin: 10px 0;
+}

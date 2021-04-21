@@ -2,22 +2,28 @@
 <html lang="en">
    <head>
       <meta charset="UTF-8">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/generic.css">
       <link rel="stylesheet" href="css/style.css">
       <link rel="stylesheet" href="css/customize.css">
       <title>PRAISELF</title>
    </head>
-   <nav>
+   <nav class="nav-bar">
       <div class="home"><a href="/">Home</a></div>
       <div class="customize"><a href="/customize">Customize</a></div>
       <div class="profile"><a href="/profile">Profile</a></div>
       <div class="login"><a href="/login">Login</a></div>
       <div class="login"><a href="/signup">Sign Up</a></div>
+      <% if (user) { %>
+      <div class="login"><a href="/logout">Log Out</a></div>
+      <% } %>
    </nav>
    <main>
       <h1>PRAISELF</h1>
-      <h2>
-      Customize Page
-      <h2>
+      <% if (user) { %>
+      <h2>Customize Page<h2>
       <p>Please type the feeling and affirmations you want to add below. </p>
       <form class="submit-form">
          <div class="new-negative-thoughts">
@@ -29,6 +35,9 @@
          <button class="submitButton">Submit</button>
       </form>
       <h3 class="success-container"></h3>
+      <% } else { %>
+      <h3>Please log in to use this page. :)</h3>
+      <% } %>
    </main>
    <script src="customize.js"></script>
    </body>

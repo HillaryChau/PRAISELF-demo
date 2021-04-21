@@ -1,0 +1,103 @@
+.copy-button {
+  color: blue;
+}
+
+.share-buttons-container {
+  margin-top: 20px;
+}
+
+.share-buttons-container i {
+  font-size: 60px;
+  margin: 0 10px;
+}
+
+.share-buttons-container i:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.share-link {
+  padding: 5px 10px;
+  border: 0;
+  flex-grow: 1;
+}
+
+.share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.share-modal-card {
+  width: 400px;
+  min-height: 300px;
+  height: 500px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.share-wrapper {
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.send-sms-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.send-sms-form > * {
+  margin: 10px 0;
+}
+
+.tooltip .tooltiptext {
+  position: absolute;
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  margin: 10px;
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
