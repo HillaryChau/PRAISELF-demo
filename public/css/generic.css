@@ -27,7 +27,7 @@ main {
 body {
   text-align: center;
   font-family: 'Montserrat';
-  background: url('img/sunflower.jpg');
+  background: url('img/orangeSmile.png');
   background-repeat: no-repeat;
   background-size: cover;
   margin: 0;
@@ -74,4 +74,7 @@ input.no-styles:focus {
 
 .nav-bar > * {
   margin: 0 20px;
+}
+.m-10-auto{
+  margin: 10px auto;
 }

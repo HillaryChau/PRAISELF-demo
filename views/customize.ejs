@@ -10,35 +10,40 @@
       <link rel="stylesheet" href="css/customize.css">
       <title>PRAISELF</title>
    </head>
-   <nav class="nav-bar">
-      <div class="home"><a href="/">Home</a></div>
-      <div class="customize"><a href="/customize">Customize</a></div>
-      <div class="profile"><a href="/profile">Profile</a></div>
-      <div class="login"><a href="/login">Login</a></div>
-      <div class="login"><a href="/signup">Sign Up</a></div>
-      <% if (user) { %>
-      <div class="login"><a href="/logout">Log Out</a></div>
-      <% } %>
-   </nav>
-   <main>
-      <h1>PRAISELF</h1>
-      <% if (user) { %>
-      <h2>Customize Page<h2>
-      <p>Please type the feeling and affirmations you want to add below. </p>
-      <form class="submit-form">
-         <div class="new-negative-thoughts">
-            <input class="custom-feeling" type="text" name="" value="" placeholder="Please type your feeling here.">
-         </div>
-         <div class="new-positive-thoughts">
-            <textarea name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
-         </div>
-         <button class="submitButton">Submit</button>
-      </form>
-      <h3 class="success-container"></h3>
-      <% } else { %>
-      <h3>Please log in to use this page. :)</h3>
-      <% } %>
-   </main>
-   <script src="customize.js"></script>
+   <body>
+      <div class="center-page">
+         <nav class="nav-bar">
+            <div class="home"><a href="/">Home</a></div>
+            <div class="customize"><a href="/customize">Customize</a></div>
+            <div class="profile"><a href="/profile">Profile</a></div>
+            <div class="login"><a href="/login">Login</a></div>
+            <div class="login"><a href="/signup">Sign Up</a></div>
+            <% if (user) { %>
+            <div class="login"><a href="/logout">Log Out</a></div>
+            <% } %>
+         </nav>
+         <main>
+            <h1>PRAISELF</h1>
+            <% if (user) { %>
+            <h2>
+            Customize Page
+            <h2>
+            <p>Please type the feeling and affirmations you want to add below. </p>
+            <form class="submit-form">
+               <div class="new-negative-thoughts">
+                  <input class="custom-feeling" type="text" name="" value="" placeholder="Please type your feeling here.">
+               </div>
+               <div class="new-positive-thoughts">
+                  <textarea name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
+               </div>
+               <button class="submitButton">Submit</button>
+            </form>
+            <h3 class="success-container"></h3>
+            <% } else { %>
+            <h3>Please log in to use this page. :)</h3>
+            <% } %>
+         </main>
+      </div>
+      <script src="customize.js"></script>
    </body>
 </html>

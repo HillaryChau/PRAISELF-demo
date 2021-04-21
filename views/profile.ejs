@@ -12,40 +12,42 @@
       <link rel="stylesheet" href="css/custom-buttons.css">
    </head>
    <body>
-      <nav class="nav-bar">
-         <div class="home"><a href="/">Home</a></div>
-         <div class="customize"><a href="/customize">Customize</a></div>
-         <div class="profile"><a href="/profile">Profile</a></div>
-         <div class="login"><a href="/login">Login</a></div>
-         <div class="login"><a href="/signup">Sign Up</a></div>
+      <div class="center-page">
+         <nav class="nav-bar">
+            <div class="home"><a href="/">Home</a></div>
+            <div class="customize"><a href="/customize">Customize</a></div>
+            <div class="profile"><a href="/profile">Profile</a></div>
+            <div class="login"><a href="/login">Login</a></div>
+            <div class="login"><a href="/signup">Sign Up</a></div>
+            <% if (user) { %>
+            <div class="login"><a href="/logout">Log Out</a></div>
+            <% } %>
+         </nav>
+         <main>
+            <h1>PRAISELF</h1>
+            <% if (user) { %>
+            <h2>Profile Page</h2>
+            <div class="profile-page">
+               <div class="favorites-container">
+                  <h3>FAVORITES</h3>
+                  <div class="favorites"></div>
+               </div>
+               <div class="custom-affirmations-container">
+                  <h3>CUSTOM AFFIRMATIONS</h3>
+                  <div class="custom-affirmations"></div>
+               </div>
+            </div>
+            <% } else { %>
+            <h3>Please log in to use this page. :)</h3>
+            <% } %>
+         </main>
          <% if (user) { %>
-         <div class="login"><a href="/logout">Log Out</a></div>
+         <script>
+            window.email = "<%= user.local.email %>";
+         </script>
          <% } %>
-      </nav>
-      <main>
-      <h1>PRAISELF</h1>
-      <% if (user) { %>
-      <h2>Profile Page</h2>
-      <div class="profile-page">
-         <div class="favorites-container">
-            <h3>FAVORITES</h3>
-            <div class="favorites"></div>
-         </div>
-         <div class="custom-affirmations-container">
-            <h3>CUSTOM AFFIRMATIONS</h3>
-            <div class="custom-affirmations"></div>
-         </div>
+         <script src="loading.js"></script>
+         <script src="profile.js"></script>
       </div>
-      <% } else { %>
-         <h3>Please log in to use this page. :)</h3>
-      <% } %>
-      </main>
-      <% if (user) { %>
-      <script>
-         window.email = "<%= user.local.email %>";
-      </script>
-      <% } %>
-      <script src="loading.js"></script>
-      <script src="profile.js"></script>
    </body>
 </html>
