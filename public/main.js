@@ -22,6 +22,10 @@ function addListeners() {
   document.querySelector('.copy-button').addEventListener('click', onCopy);
   document.querySelector('.share-button').addEventListener('click', onOpenModal);
   document.querySelector('.close-modal-button').addEventListener('click', onCloseModal);
+  document.querySelector('.share-modal').addEventListener('click', onCloseModal);
+  document.querySelector('.share-modal-card').addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
   document.querySelector('.sms-link').addEventListener('click', onClickSmsButton);
   document.querySelector('.send-sms-form').addEventListener('submit', onSendText);
 }
