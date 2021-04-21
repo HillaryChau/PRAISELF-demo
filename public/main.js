@@ -181,7 +181,8 @@ function renderAffirmationCard(event) {
 function toggleFavorite(event) {
   const affirmationId = event.target.getAttribute('data-affirmation-id'); // this is the heart that's selected
   const favoriteId = event.target.getAttribute('data-favorite-id');
-  const isFavorite = event.target.classList.contains('fa'); // filled in heart that's selected
+  const isFavorite = !!favoriteId;
+
   if (isFavorite) {
     fetch('favorites', {
       method: 'delete',
@@ -192,9 +193,12 @@ function toggleFavorite(event) {
     })
       .then(() => getFavorites())
       .then(() => {
-        const option = document.querySelector(`[data-affirmation-id="${affirmationId}"]`);
+        const option = document.querySelector(`option[data-affirmation-id="${affirmationId}"]`);
         const optionText = option.innerHTML.replace('💛', '🤍');
         option.innerHTML = optionText;
+        document
+          .querySelector(`.favorite-button[data-affirmation-id="${affirmationId}"]`)
+          .removeAttribute('data-favorite-id');
         document.querySelector('.fa-heart').classList.remove('fa');
         document.querySelector('.fa-heart').classList.add('far');
       });
@@ -208,8 +212,14 @@ function toggleFavorite(event) {
     })
       .then(() => getFavorites())
       .then(() => {
-        const option = document.querySelector(`[data-affirmation-id="${affirmationId}"]`);
+        const option = document.querySelector(`option[data-affirmation-id="${affirmationId}"]`);
         const optionText = option.innerHTML.replace('🤍', '💛');
+        const favoriteAffirmation = window.favorites.find(
+          (fav) => fav.affirmationId === affirmationId,
+        );
+        document
+          .querySelector(`.favorite-button[data-affirmation-id="${affirmationId}"]`)
+          .setAttribute('data-favorite-id', favoriteAffirmation._id);
         option.innerHTML = optionText;
         document.querySelector('.fa-heart').classList.remove('far');
         document.querySelector('.fa-heart').classList.add('fa');
