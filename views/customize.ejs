@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="css/generic.css">
       <link rel="stylesheet" href="css/style.css">
       <link rel="stylesheet" href="css/customize.css">
+      <link rel="stylesheet" href="css/custom-buttons.css">
       <title>PRAISELF</title>
    </head>
    <body>
@@ -16,11 +17,12 @@
             <div class="home"><a href="/">Home</a></div>
             <div class="customize"><a href="/customize">Customize</a></div>
             <div class="profile"><a href="/profile">Profile</a></div>
-            <div class="login"><a href="/login">Login</a></div>
-            <div class="login"><a href="/signup">Sign Up</a></div>
             <% if (user) { %>
             <div class="login"><a href="/logout">Log Out</a></div>
-            <% } %>
+            <% } else{ %>
+               <div class="login"><a href="/login">Login</a></div>
+               <div class="login"><a href="/signup">Sign Up</a></div>
+            <% } %>   
          </nav>
          <main>
             <h1>PRAISELF</h1>
@@ -36,7 +38,7 @@
                <div class="new-positive-thoughts">
                   <textarea name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
                </div>
-               <button class="submitButton">Submit</button>
+               <button class="submitButton custom-button orange m-10-auto">Submit</button>
             </form>
             <h3 class="success-container"></h3>
             <% } else { %>

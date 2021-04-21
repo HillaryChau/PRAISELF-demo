@@ -18,10 +18,12 @@
          <div class="home"><a href="/">Home</a></div>
          <div class="customize"><a href="/customize">Customize</a></div>
          <div class="profile"><a href="/profile">Profile</a></div>
-         <div class="login"><a href="/login">Login</a></div>
-         <div class="login"><a href="/signup">Sign Up</a></div>
+   
          <% if (user) { %>
          <div class="login"><a href="/logout">Log Out</a></div>
+         <% } else { %>
+            <div class="login"><a href="/login">Login</a></div>
+            <div class="login"><a href="/signup">Sign Up</a></div>
          <% } %>
       </nav>
       <main>
