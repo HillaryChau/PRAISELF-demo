@@ -1,5 +1,4 @@
-## PRAISELF
-pronounced: /prāz/ + /self/
+## PRAISELF --pronounced: /prāz/ + /self/
 
 PRAISELF is a full-stack web application that can help one be happier, by converting feelings into positive affirmations for you and your friends. When you create a login, there is also the option to customize  and add your own positive affirmations for your profile.
  
