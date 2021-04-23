@@ -38,7 +38,7 @@ function onCloseModal() {
 
 function onCopy() {
   // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
-  const copyText = document.querySelector('.share-link'); //this is from w3 schools example
+  const copyText = document.querySelector('.share-link'); // this is from w3 schools example
   copyText.select();
   copyText.setSelectionRange(0, 99999);
   document.execCommand('copy');
