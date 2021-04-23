@@ -183,8 +183,8 @@ function renderAffirmationCard(event) {
 }
 
 function toggleFavorite(event) {
-  const affirmationId = event.target.getAttribute('data-affirmation-id'); // this is the heart that's selected
-  const favoriteId = event.target.getAttribute('data-favorite-id');
+  const affirmationId = event.target.getAttribute('data-affirmation-id'); // _id of the affirmation
+  const favoriteId = event.target.getAttribute('data-favorite-id'); // _id of the favorite for that affirmation if available
   const isFavorite = !!favoriteId;
 
   if (isFavorite) {
