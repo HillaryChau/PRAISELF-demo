@@ -4,7 +4,7 @@ PRAISELF is a full-stack web application that can help one be happier, by conver
 Use the drop down menu to  select the emotion you are most closely feeling, and below shows the positive affirmations you should read out loud. Please help spread positivity by adding positive affirmations to your life and sending them to friends through text and Gmail. 
 
 ## How It's Made:
-Tech used: HTML, EJS, CSS, JavaScript, Node.js, Express.js, MongoDb, Twilio
+Tools used: HTML, EJS, CSS, JavaScript, Node.js, Express.js, MongoDb, Twilio
 
 
 Please click the link below to interact with it:
