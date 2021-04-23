@@ -80,3 +80,13 @@ input.no-styles:focus {
 .m-10-auto{
   margin: 10px auto;
 }
+
+.link{
+  color:blue;
+  font-weight: 900;
+}
+
+.w-100 {
+  width: 100%;
+}
+

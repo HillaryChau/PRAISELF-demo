@@ -65,8 +65,8 @@ function onSendText(event) {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        link: window.link,
-        phoneNumber: phoneNumber,
+        link: window.link, // this will send the actual url of the page you are on, which shows whenever a affirmation card is rendered
+        phoneNumber: phoneNumber,  //these (3) things are parsed on the routes.js in the post request of the twilio API
         affirmation: window.currentAffirmation,  //affirmation key shows the current affirmation on the screen
       }),
     })
@@ -147,6 +147,7 @@ function renderAffirmationCard(event) {
   window.link = `${window.location.origin}?id=${affirmationId}`;
   window.currentAffirmation = affirmation;
 
+  ////////////GMAIL Message Set up *with the subject and body* /////////////
   const subject = `PRAISELF: Here's a positive affirmation for you!`.replaceAll(' ', '%20');
   const gmailBody = `I saw this affirmation and I thought of you. Hope you like it.\n ${window.link}`;
   const body = gmailBody.replaceAll(' ', '%20');
@@ -158,14 +159,18 @@ function renderAffirmationCard(event) {
   document.querySelector('.sms-form-container').classList.add('invisible');
   document.querySelector('.affirmation-card').classList.remove('hide');
 
+
+  /////this is where the GMAIL href is dynamically updated onto the html, so that the card displays the gmailLink 
+  ////the gmailLink be the href to get the affirmation email  + mesage + subject etc (the whole thing)
   const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`;
   document.querySelector('.gmail-link').href = gmailLink;
 
-  if (window.email) {
+  if (window.email) {   // window.email = if user is signed in 
     const favoriteAffirmation = window.favorites.find((fav) => fav.affirmationId === affirmationId);
 
     document.querySelector('.fa-heart').classList.remove('hide');
     document.querySelector('.favorite-button').setAttribute('data-affirmation-id', affirmationId);
+    ///^^^^^ set data-affirmation-id, to the _id value of the affirmation record in MongoDB affirmation collection
 
     if (favoriteAffirmation) {
       document

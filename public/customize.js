@@ -2,8 +2,8 @@ document.querySelector('.submit-form').addEventListener('submit', createCustomAf
 
 function createCustomAffirmations(event) {
   event.preventDefault();
-  const positiveAffirmation = document.querySelector('.new-positive-thoughts > textarea').value;
-  const negativeEmotion = document.querySelector('.new-negative-thoughts > input').value;
+  const positiveAffirmation = document.querySelector('.custom-affirmation').value;
+  const negativeEmotion = document.querySelector('.custom-feeling').value;
 
   fetch('customAffirmations', {
     method: 'post',
@@ -13,8 +13,8 @@ function createCustomAffirmations(event) {
       positiveAffirmation,
     }),
   }).then(() => {
-    document.querySelector('.new-positive-thoughts > textarea').value = '';
-    document.querySelector('.new-negative-thoughts > input').value = '';
+    document.querySelector('.custom-affirmation').value = '';
+    document.querySelector('.custom-feeling').value = '';
     document.querySelector('.success-container').innerText =
       'Custom affirmation successfully created';
   });

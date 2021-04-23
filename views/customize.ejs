@@ -27,22 +27,16 @@
          <main>
             <h1>PRAISELF</h1>
             <% if (user) { %>
-            <h2>
-            Customize Page
-            <h2>
+            <h2>Customize Page</h2>
             <p>Please type the feeling and affirmations you want to add below. </p>
             <form class="submit-form">
-               <div class="new-negative-thoughts">
-                  <input class="custom-feeling" type="text" name="" value="" placeholder="Please type your feeling here.">
-               </div>
-               <div class="new-positive-thoughts">
-                  <textarea name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
-               </div>
+               <input class="custom-feeling" type="text" name="" value="" placeholder="Please type your feeling here.">
+               <textarea class="custom-affirmation" name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
                <button class="submitButton custom-button orange m-10-auto">Submit</button>
             </form>
             <h3 class="success-container"></h3>
             <% } else { %>
-            <h3>Please log in to use this page. :)</h3>
+            <h3>Please <a href="/login" class="link">login</a> to use this page. :)</h3>
             <% } %>
          </main>
       </div>

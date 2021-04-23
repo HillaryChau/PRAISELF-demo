@@ -3,8 +3,12 @@
   height: 30px;
 }
 
-textarea {
+.custom-affirmation {
   margin-top: 20px;
   width: 82.5%;
   height: 200px;
+}
+
+.submit-form {
+  width: 100%;
 }
