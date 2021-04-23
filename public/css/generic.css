@@ -66,6 +66,7 @@ input.no-styles:focus {
 .clickable,
 .clickable-button {
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .clickable-button:hover {

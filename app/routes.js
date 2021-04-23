@@ -1,37 +1,16 @@
-const ObjectId = require('mongodb').ObjectId; // finding records (records = mongodb objects) with a specific id
-const affirmations = require('./affirmations');
+const ObjectId = require('mongodb').ObjectId; // require allows you to import from the node modules (which are in my node_modules folder). 
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // the .env allows me to hide enviroment variables from the code when uploaded online 
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
+const client = require('twilio')(accountSid, authToken); //picks up twilio from the node modules and helps you login to twilio with the variables accountSid,authToken) 
 
-module.exports = function (app, passport, db) {
-  // ========================== SEEDING ==========================
-
-  // uncomment and visit route to reseed database
-  // app.get('/seed', function (req, res) {
-  //   affirmations.forEach((affirmation) => {
-  //     db.collection('affirmations').save(affirmation);
-  //   });
-  //   res.render('nothing.ejs', {});
-  // });
+module.exports = function (app, passport, db) {  // module.exports allow you to import/export js from different files, using commonJs
 
   // ========================== TWILIO ==========================
 
-  app.get('/twilio', function (req, res) {
-    const body = 'You are fine. I believe in you Hillary.';
-    client.messages.create({ body, from: '+12013807615', to: '+18572336392' }).then((message) => {
-      if (message.sid) {
-        res.send({ message: 'Message sent successful' });
-      } else {
-        res.send({ message: 'Oops, something went wrong!' });
-      }
-    });
-  });
-
   app.post('/twilio', function (req, res) {
-    const { phoneNumber, link, affirmation } = req.body;
-    const { negativeEmotion, positiveAffirmation } = affirmation;
+    const { phoneNumber, link, affirmation } = req.body;  //destructured code, same as writing it as const phoneNumber = req.body.phoneNumber//
+    const { negativeEmotion, positiveAffirmation } = affirmation; 
 
     const textHeader = 'Hello from PRAISELF.';
     const feelingHeader = `${negativeEmotion}...`;
@@ -49,13 +28,17 @@ module.exports = function (app, passport, db) {
       textFooterEnd,
     ].join('\n\n');
 
-    client.messages.create({ body, from: '+12013807615', to: phoneNumber }).then((message) => {
-      if (message.sid) {
-        res.send({ message: 'Message sent successful' });
-      } else {
-        res.send({ message: 'Oops, something went wrong!' });
-      }
-    });
+    //=== this is where the SMS promise is created===
+    client.messages.create({ body, from: '+12013807615', to: phoneNumber })
+      .then((message) => {  //this is where the fullfillment promise handler is//
+        if (message.sid) {
+          res.send({ message: 'Message sent successful' });
+        } else {
+          res.send({ message: 'Oops, something went wrong!' });
+        }
+      }).catch(()=> { //catch block in case the promise fails, it goes to this route
+        res.send({ message: 'Twilio Phone number has been disabled' });
+      });
   });
 
   // ========================== PAGES ==========================

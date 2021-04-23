@@ -15,7 +15,7 @@ var cookieParser = require('cookie-parser'); //session keep person logged in
 var bodyParser   = require('body-parser');// get elements out of req body,
 var session      = require('express-session');//stay user stay logged in
 
-require('dotenv').config()
+require('dotenv').config() //relates to files in .env to pick them up locally
 
 
 
@@ -27,7 +27,7 @@ var db
 mongoose.connect(configDB.url, (err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db);
+  require('./app/routes.js')(app, passport, db); 
 }); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration

@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   await new Promise(function (resolve, reject) {
     setTimeout(() => resolve(1), 1); // (*)
   })
-    .then(() => getFavorites())
-    .then(() => getAffirmations())
-    .then(() => getCustomAffirmations())
-    .then(() => renderOptions())
-    .then(() => addListeners())
-    .then(() => applyQueryParams());
+    .then(() => getFavorites()) // get these collections from mongoDB and load them onto page
+    .then(() => getAffirmations()) // ^^
+    .then(() => getCustomAffirmations()) // ^^
+    .then(() => renderOptions()) // dynamically populates the dropdown with options (the positive affirmations)
+    .then(() => addListeners()) // is placed after the html elements created by JS, so the event listeners can work 
+    .then(() => applyQueryParams()); // ?=id 
 });
 
 function addListeners() {
-  if (window.email) {
+  if (window.email) { //refers to the if the user is logged in, window.email exists  so user can unfavorite/favorite their affirmation cards
     document.querySelector('.favorite-button').addEventListener('click', toggleFavorite);
   }
 
@@ -22,10 +22,8 @@ function addListeners() {
   document.querySelector('.copy-button').addEventListener('click', onCopy);
   document.querySelector('.share-button').addEventListener('click', onOpenModal);
   document.querySelector('.close-modal-button').addEventListener('click', onCloseModal);
-  document.querySelector('.share-modal').addEventListener('click', onCloseModal);
-  document.querySelector('.share-modal-card').addEventListener('click', (event) => {
-    event.stopPropagation();
-  });
+  document.querySelector('.share-modal').addEventListener('click', onCloseModal); //if you click outside modal card (aka the modal share),it will close the modal card.
+  document.querySelector('.share-modal-card').addEventListener('click', (event) => { event.stopPropagation(); }); //intercepting to stop event bubbling so when you click the  modal card, it wont close.
   document.querySelector('.sms-link').addEventListener('click', onClickSmsButton);
   document.querySelector('.send-sms-form').addEventListener('submit', onSendText);
 }
@@ -39,7 +37,8 @@ function onCloseModal() {
 }
 
 function onCopy() {
-  const copyText = document.querySelector('.share-link');
+  // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+  const copyText = document.querySelector('.share-link'); //this is from w3 schools example
   copyText.select();
   copyText.setSelectionRange(0, 99999);
   document.execCommand('copy');
@@ -61,14 +60,14 @@ function onSendText(event) {
   const isValid = form.checkValidity();
   form.reportValidity();
 
-  if (isValid) {
+  if (isValid) {    // if we have a valid phone number we send a post req to the twilio route
     fetch('twilio', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         link: window.link,
         phoneNumber: phoneNumber,
-        affirmation: window.currentAffirmation,
+        affirmation: window.currentAffirmation,  //affirmation key shows the current affirmation on the screen
       }),
     })
       .then((res) => {
@@ -89,7 +88,7 @@ function onSendText(event) {
   }
 }
 
-// this is the ?id=< queryparams id of the affirmation >
+// this is the ?id of the affirmation >
 function applyQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
