@@ -22,7 +22,7 @@
   flex-grow: 1;
 }
 
-.share-modal {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -34,7 +34,7 @@
   align-items: center;
 }
 
-.share-modal-card {
+.modal-card {
   width: 400px;
   min-height: 300px;
   height: 500px;
@@ -43,7 +43,7 @@
   border-radius: 10px;
 }
 
-.share-modal-header {
+.modal-header {
   display: flex;
   justify-content: space-between;
   padding: 5px;

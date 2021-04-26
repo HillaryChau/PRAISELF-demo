@@ -1,84 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <link rel="preconnect" href="https://fonts.gstatic.com">
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-      <link rel="stylesheet" href="css/generic.css">
-      <link rel="stylesheet" href="css/style.css">
-      <link rel="stylesheet" href="css/modal.css">
-      <link rel="stylesheet" href="css/affirmation-card.css">
-      <link rel="stylesheet" href="css/custom-buttons.css">
-      <title>PRAISELF</title>
-   </head>
-   <body>
-   <div class="center-page">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/generic.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/modal.css" />
+    <link rel="stylesheet" href="css/affirmation-card.css" />
+    <link rel="stylesheet" href="css/custom-buttons.css" />
+    <title>PRAISELF</title>
+  </head>
+  <body>
+    <div class="center-page">
       <nav class="nav-bar">
-         <div class="home"><a href="/">Home</a></div>
-         <div class="customize"><a href="/customize">Customize</a></div>
-         <div class="profile"><a href="/profile">Profile</a></div>
-   
-         <% if (user) { %>
-         <div class="login"><a href="/logout">Log Out</a></div>
-         <% } else { %>
-            <div class="login"><a href="/login">Login</a></div>
-            <div class="login"><a href="/signup">Sign Up</a></div>
-         <% } %>
+        <div class="home"><a href="/">Home</a></div>
+        <div class="customize"><a href="/customize">Customize</a></div>
+        <div class="profile"><a href="/profile">Profile</a></div>
+
+        <% if (user) { %>
+        <div class="login"><a href="/logout">Log Out</a></div>
+        <% } else { %>
+        <div class="login"><a href="/login">Login</a></div>
+        <div class="login"><a href="/signup">Sign Up</a></div>
+        <% } %>
       </nav>
       <main>
-         <h1>PRAISELF</h1>
-         <h3 class="app-description">PRAISELF is a positive affirmation web application. It allows you to create and select the feeling that you most closely align with. You receive positive affirmations to praise yourself.</h3>
-         <div class="negative-thoughts">
-            <select aria-label="Choose Your Feeling" name="negFeeling" title="negFeeling" class="affirmation-options">
-               <option disabled selected>Please select the feeling you feel most aligned with</option>
-            </select>
-         </div>
-         <div class="affirmation-card hide">
-            <div class="neg-feeling-header"></div>
-            <div class="positive-thoughts"></div>
-            <div class="card-buttons-container">
-               <% if (user) { %>
-               <button class="favorite-button custom-button red"><i class="far fa-heart hide"></i>FAVORITE</button>
-               <% } %>
-               <button class="share-button custom-button orange"><i class="fas fa-share-square"></i>SHARE</button>
-            </div>
-         </div>
+        <h1>PRAISELF</h1>
+        <h3 class="app-description">
+          PRAISELF is a positive affirmation web application. It allows you to create and select the feeling that you most closely align with. You receive positive affirmations to praise yourself.
+        </h3>
+        <div class="negative-thoughts">
+          <select aria-label="Choose Your Feeling" name="negFeeling" title="negFeeling" class="affirmation-options">
+            <option disabled selected>Please select the feeling you feel most aligned with</option>
+          </select>
+        </div>
+        <div class="affirmation-card hide">
+          <div class="neg-feeling-header"></div>
+          <div class="positive-thoughts"></div>
+          <div class="card-buttons-container">
+            <% if (user) { %>
+            <button class="favorite-button custom-button red"><i class="far fa-heart hide"></i>Favorite</button>
+            <% } %>
+            <button class="share-button custom-button orange"><i class="fas fa-share-square"></i>Share</button>
+          </div>
+        </div>
       </main>
-   </div>
-   <div class="share-modal invisible">
-      <div class="share-modal-card">
-         <div class="share-modal-header"><span>Share</span><i class="close-modal-button clickable fas fa-times"></i></div>
-         <div class="share-wrapper">
-            <input type="text" value="" class="share-link no-styles">
-            <div class="tooltip">
-               <button class="copy-button clickable">
-               <span class="tooltiptext">Copy to clipboard</span>
-               COPY
-               </button>
-            </div>
-         </div>
-         <div class="share-buttons-container">
-            <button class="sms-link"><i class="fas fa-sms"></i></button>
-            <a class="gmail-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;" target="_blank" rel="noopener noreferrer"><i class="far fa-envelope clickable"></i></a>
-         </div>
-         <div class="sms-form-container invisible" action="post" action="/twilio">
-            <form class="send-sms-form">
-               <label for="phone-number">Enter your phone number as +1 and (10 digit phone number)</label>
-               <input type="tel" class="form-phone-number" name="phone-number" pattern="[+][0-9]{11}" placeholder="+10123456789" type="tel" required>
-               <button class="send-button custom-button green" type="submit">Send SMS</button>
-               </form>
-               <p class="invalid-number hide">That number is invalid. Please enter number like example.</p>
-               <p class="twilio-response"></p>
-         </div>
+    </div>
+    <div class="modal invisible">
+      <div class="modal-card">
+        <div class="modal-header"><span>Share</span><i class="close-modal-button clickable fas fa-times"></i></div>
+        <div class="share-wrapper">
+          <input type="text" value="" class="share-link no-styles" />
+          <div class="tooltip">
+            <button class="copy-button clickable">
+              <span class="tooltiptext">Copy to clipboard</span>
+              COPY
+            </button>
+          </div>
+        </div>
+        <div class="share-buttons-container">
+          <button class="sms-link"><i class="fas fa-sms"></i></button>
+          <a class="gmail-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;" target="_blank" rel="noopener noreferrer"><i class="far fa-envelope clickable"></i></a>
+        </div>
+        <div class="sms-form-container invisible">
+          <form class="send-sms-form">
+            <label for="phone-number">Enter your phone number as +1 and (10 digit phone number)</label>
+            <input type="tel" class="form-phone-number" name="phone-number" pattern="[+][0-9]{11}" placeholder="+10123456789" type="tel" required />
+            <button class="send-button custom-button green" type="submit">Send SMS</button>
+          </form>
+          <p class="invalid-number hide">That number is invalid. Please enter number like example.</p>
+          <p class="twilio-response"></p>
+        </div>
       </div>
-   </div>
-   <% if (user) { %>
-   <script>
-      window.email = "<%= user.local.email %>";
-   </script>
-   <% } %>
-   <script src="loading.js"></script>
-   <script src="main.js"></script>
-   </body>
+    </div>
+    <% if (user) { %>
+    <script>
+      window.email = '<%= user.local.email %>';
+    </script>
+    <% } %>
+    <script src="loading.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>

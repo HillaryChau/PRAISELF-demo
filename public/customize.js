@@ -1,4 +1,16 @@
-document.querySelector('.submit-form').addEventListener('submit', createCustomAffirmations);
+document.addEventListener('DOMContentLoaded', (event) => {
+  if (!window.email) {
+    return;
+  }
+
+  new Promise(function (resolve, reject) {
+    setTimeout(() => resolve(1), 1);
+  }).then(() => addListeners());
+});
+
+function addListeners() {
+  document.querySelector('.submit-form').addEventListener('submit', createCustomAffirmations);
+}
 
 function createCustomAffirmations(event) {
   event.preventDefault();
@@ -15,7 +27,6 @@ function createCustomAffirmations(event) {
   }).then(() => {
     document.querySelector('.custom-affirmation').value = '';
     document.querySelector('.custom-feeling').value = '';
-    document.querySelector('.success-container').innerText =
-      'Custom affirmation successfully created';
+    document.querySelector('.success-container').innerText = 'Custom affirmation successfully created';
   });
 }

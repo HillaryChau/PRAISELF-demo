@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     .then(() => getAffirmations()) // ^^
     .then(() => getCustomAffirmations()) // ^^
     .then(() => renderOptions()) // dynamically populates the dropdown with options (the positive affirmations)
-    .then(() => addListeners()) // is placed after the html elements created by JS, so the event listeners can work 
-    .then(() => applyQueryParams()); // ?=id 
+    .then(() => addListeners()) // is placed after the html elements created by JS, so the event listeners can work
+    .then(() => applyQueryParams()); // ?=id
 });
 
 function addListeners() {
-  if (window.email) { //refers to the if the user is logged in, window.email exists  so user can unfavorite/favorite their affirmation cards
+  if (window.email) {
+    //refers to the if the user is logged in, window.email exists  so user can unfavorite/favorite their affirmation cards
     document.querySelector('.favorite-button').addEventListener('click', toggleFavorite);
   }
 
@@ -22,18 +23,18 @@ function addListeners() {
   document.querySelector('.copy-button').addEventListener('click', onCopy);
   document.querySelector('.share-button').addEventListener('click', onOpenModal);
   document.querySelector('.close-modal-button').addEventListener('click', onCloseModal);
-  document.querySelector('.share-modal').addEventListener('click', onCloseModal); //if you click outside modal card (aka the modal share),it will close the modal card.
-  document.querySelector('.share-modal-card').addEventListener('click', (event) => { event.stopPropagation(); }); //intercepting to stop event bubbling so when you click the  modal card, it wont close.
+  document.querySelector('.modal').addEventListener('click', onCloseModal); //if you click outside modal card (aka the modal share),it will close the modal card.
+  document.querySelector('.modal-card').addEventListener('click', (e) => e.stopPropagation()); //intercepting to stop event bubbling so when you click the  modal card, it wont close.
   document.querySelector('.sms-link').addEventListener('click', onClickSmsButton);
   document.querySelector('.send-sms-form').addEventListener('submit', onSendText);
 }
 
 function onOpenModal() {
-  document.querySelector('.share-modal').classList.remove('invisible');
+  document.querySelector('.modal').classList.remove('invisible');
 }
 
 function onCloseModal() {
-  document.querySelector('.share-modal').classList.add('invisible');
+  document.querySelector('.modal').classList.add('invisible');
 }
 
 function onCopy() {
@@ -60,14 +61,15 @@ function onSendText(event) {
   const isValid = form.checkValidity();
   form.reportValidity();
 
-  if (isValid) {    // if we have a valid phone number we send a post req to the twilio route
+  if (isValid) {
+    // if we have a valid phone number we send a post req to the twilio route
     fetch('twilio', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         link: window.link, // this will send the actual url of the page you are on, which shows whenever a affirmation card is rendered
-        phoneNumber: phoneNumber,  //these (3) things are parsed on the routes.js in the post request of the twilio API
-        affirmation: window.currentAffirmation,  //affirmation key shows the current affirmation on the screen
+        phoneNumber: phoneNumber, //these (3) things are parsed on the routes.js in the post request of the twilio API
+        affirmation: window.currentAffirmation, //affirmation key shows the current affirmation on the screen
       }),
     })
       .then((res) => {
@@ -159,13 +161,13 @@ function renderAffirmationCard(event) {
   document.querySelector('.sms-form-container').classList.add('invisible');
   document.querySelector('.affirmation-card').classList.remove('hide');
 
-
-  /////this is where the GMAIL href is dynamically updated onto the html, so that the card displays the gmailLink 
+  /////this is where the GMAIL href is dynamically updated onto the html, so that the card displays the gmailLink
   ////the gmailLink be the href to get the affirmation email  + mesage + subject etc (the whole thing)
   const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`;
   document.querySelector('.gmail-link').href = gmailLink;
 
-  if (window.email) {   // window.email = if user is signed in 
+  if (window.email) {
+    // window.email = if user is signed in
     const favoriteAffirmation = window.favorites.find((fav) => fav.affirmationId === affirmationId);
 
     document.querySelector('.fa-heart').classList.remove('hide');

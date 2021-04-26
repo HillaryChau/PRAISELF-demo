@@ -1,44 +1,17 @@
-const ObjectId = require('mongodb').ObjectId; // require allows you to import from the node modules (which are in my node_modules folder). 
+const ObjectId = require('mongodb').ObjectId; // require allows you to import from the node modules (which are in my node_modules folder).
+const twilioEmitter = require('./twilioEmitter');
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID; // the .env allows me to hide enviroment variables from the code when uploaded online 
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken); //picks up twilio from the node modules and helps you login to twilio with the variables accountSid,authToken) 
-
-module.exports = function (app, passport, db) {  // module.exports allow you to import/export js from different files, using commonJs
+module.exports = function (app, passport, db) {
+  // module.exports allow you to import/export js from different files, using commonJs
 
   // ========================== TWILIO ==========================
 
+  app.post('/scheduled-twilio', function (req, res) {
+    twilioEmitter.emit('twilio-scheduled-message', req, res);
+  });
+
   app.post('/twilio', function (req, res) {
-    const { phoneNumber, link, affirmation } = req.body;  //destructured code, same as writing it as const phoneNumber = req.body.phoneNumber//
-    const { negativeEmotion, positiveAffirmation } = affirmation; 
-
-    const textHeader = 'Hello from PRAISELF.';
-    const feelingHeader = `${negativeEmotion}...`;
-    const emotionsHeader = 'Please read these affirmations:';
-    const emotionsBody = '• ' + positiveAffirmation.split('. ').join('.\n• ');
-    const textFooter = `See these affirmations at ${link}`;
-    const textFooterEnd = `🌻 🌻 🌻 🌻 🌻 🌻 🌻 🌻 🌻`;
-
-    const body = [
-      textHeader,
-      feelingHeader,
-      emotionsHeader,
-      emotionsBody,
-      textFooter,
-      textFooterEnd,
-    ].join('\n\n');
-
-    //=== this is where the SMS promise is created===
-    client.messages.create({ body, from: '+12013807615', to: phoneNumber })
-      .then((message) => {  //this is where the fullfillment promise handler is//
-        if (message.sid) {
-          res.send({ message: 'Message sent successful' });
-        } else {
-          res.send({ message: 'Oops, something went wrong!' });
-        }
-      }).catch(()=> { //catch block in case the promise fails, it goes to this route
-        res.send({ message: 'Twilio Phone number has been disabled' });
-      });
+    twilioEmitter.emit('twilio-message', req, res);
   });
 
   // ========================== PAGES ==========================

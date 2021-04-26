@@ -1,45 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-      <link rel="preconnect" href="https://fonts.gstatic.com">
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="css/generic.css">
-      <link rel="stylesheet" href="css/style.css">
-      <link rel="stylesheet" href="css/customize.css">
-      <link rel="stylesheet" href="css/custom-buttons.css">
-      <title>PRAISELF</title>
-   </head>
-   <body>
-      <div class="center-page">
-         <nav class="nav-bar">
-            <div class="home"><a href="/">Home</a></div>
-            <div class="customize"><a href="/customize">Customize</a></div>
-            <div class="profile"><a href="/profile">Profile</a></div>
-            <% if (user) { %>
-            <div class="login"><a href="/logout">Log Out</a></div>
-            <% } else{ %>
-               <div class="login"><a href="/login">Login</a></div>
-               <div class="login"><a href="/signup">Sign Up</a></div>
-            <% } %>   
-         </nav>
-         <main>
-            <h1>PRAISELF</h1>
-            <% if (user) { %>
-            <h2>Customize Page</h2>
-            <p>Please type the feeling and affirmations you want to add below. </p>
-            <form class="submit-form">
-               <input class="custom-feeling" type="text" name="" value="" placeholder="Please type your feeling here.">
-               <textarea class="custom-affirmation" name="new-affirmations" placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."></textarea>
-               <button class="submitButton custom-button orange m-10-auto">Submit</button>
-            </form>
-            <h3 class="success-container"></h3>
-            <% } else { %>
-            <h3>Please <a href="/login" class="link">login</a> to use this page. :)</h3>
-            <% } %>
-         </main>
-      </div>
-      <script src="customize.js"></script>
-   </body>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/generic.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/customize.css" />
+    <link rel="stylesheet" href="css/custom-buttons.css" />
+    <title>PRAISELF</title>
+  </head>
+  <body>
+    <div class="center-page">
+      <nav class="nav-bar">
+        <div class="home"><a href="/">Home</a></div>
+        <div class="customize"><a href="/customize">Customize</a></div>
+        <div class="profile"><a href="/profile">Profile</a></div>
+        <% if (user) { %>
+        <div class="login"><a href="/logout">Log Out</a></div>
+        <% } else{ %>
+        <div class="login"><a href="/login">Login</a></div>
+        <div class="login"><a href="/signup">Sign Up</a></div>
+        <% } %>
+      </nav>
+      <main>
+        <h1>PRAISELF</h1>
+        <% if (user) { %>
+        <h2>Customize Page</h2>
+        <p>Please type the feeling and affirmations you want to add below.</p>
+        <form class="submit-form">
+          <input
+            class="custom-feeling"
+            type="text"
+            name=""
+            value=""
+            placeholder="Please type your feeling here."
+          />
+          <textarea
+            class="custom-affirmation"
+            name="new-affirmations"
+            placeholder="Please type your affirmations here, followed by a period after each affirmation. Example: I am amazing."
+          ></textarea>
+          <button class="submitButton custom-button orange m-10-auto">Submit</button>
+        </form>
+        <h3 class="success-container"></h3>
+        <% } else { %>
+        <h3>Please <a href="/login" class="link">login</a> to use this page. :)</h3>
+        <% } %>
+      </main>
+    </div>
+    <script src="customize.js"></script>
+  </body>
 </html>

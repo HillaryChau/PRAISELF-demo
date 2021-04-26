@@ -73,3 +73,13 @@
   background-color: #41a425;
   border-color: #41a425;
 }
+
+.dark-green {
+  background-color: #287e10;
+  border-color: #287e10;
+}
+
+.dark-green:hover {
+  background-color: #41a425;
+  border-color: #41a425;
+}
