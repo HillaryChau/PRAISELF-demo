@@ -48,7 +48,7 @@ function onCloseModal() {
   document.querySelector('.modal').classList.add('invisible');
 }
 
-function onSendScheduledSms() {
+function onSendScheduledSms(event) {
   event.preventDefault();
 
   const nowTime = new Date(Date.now()).toString().substring(16, 21).split(':'); // resolves to [13, 15] at 1:15 pm
@@ -72,8 +72,8 @@ function onSendScheduledSms() {
     return;
   }
 
-  // time is invalid if scheduled time is after 9pm
-  if (Number(inputTime[0]) >= 21) {
+  // time is invalid if scheduled time is after 9pm and before 7am
+  if (Number(inputTime[0]) >= 21 && Number(inputTime[0]) <= 6) {
     document.querySelector('.invalid-time').classList.remove('hide');
     setTimeout(() => document.querySelector('.invalid-time').classList.add('hide'), 5000);
     return;
@@ -97,7 +97,7 @@ function onSendScheduledSms() {
 
       setTimeout(() => {
         document.querySelector('.twilio-response').innerHTML = '';
-      }, 5000);
+      }, 8000);
     });
 }
 
@@ -135,7 +135,7 @@ function renderAffirmationCard({ affirmation, favorite, isCreatedByLoggedInUser 
   const positiveThoughtsText = document.createElement('p');
   const unheartIcon = document.createElement('i');
   const trashIcon = document.createElement('i');
-  const shareIcon = document.createElement('i');
+  const scheduleIcon = document.createElement('i');
   const buttons = [deleteFavoriteBtn, deleteAffirmationBtn];
 
   affirmationCard.setAttribute('data-affirmation-id', affirmation._id);
@@ -156,7 +156,7 @@ function renderAffirmationCard({ affirmation, favorite, isCreatedByLoggedInUser 
   addClasses(sendScheduledSmsBtn, ['share-button', 'custom-button', 'dark-green']);
   addClasses(unheartIcon, ['far', 'fa-heart']);
   addClasses(trashIcon, ['fas', 'fa-trash-restore']);
-  addClasses(shareIcon, ['fas', 'fa-share-square']);
+  addClasses(scheduleIcon, ['far', 'fa-calendar-plus']);
 
   deleteFavoriteBtn.append(unheartIcon);
   deleteFavoriteBtn.append('Unfavorite');
@@ -169,8 +169,8 @@ function renderAffirmationCard({ affirmation, favorite, isCreatedByLoggedInUser 
     buttonsContainer.append(deleteFavoriteBtn);
   }
 
-  sendScheduledSmsBtn.append(shareIcon);
-  sendScheduledSmsBtn.append('Share');
+  sendScheduledSmsBtn.append(scheduleIcon);
+  sendScheduledSmsBtn.append('Schedule');
   sendScheduledSmsBtn.setAttribute('data-affirmation-id', affirmation._id);
   buttonsContainer.append(sendScheduledSmsBtn);
 
