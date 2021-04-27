@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const schedule = require('node-schedule');
+const { CronJob } = require('cron');
 const accountSid = process.env.TWILIO_ACCOUNT_SID; // the .env allows me to hide enviroment variables from the code when uploaded online
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken); // picks up twilio from the node modules and helps you login to twilio with the variables accountSid, authToken)
@@ -44,15 +44,20 @@ twilioEmitter.on('twilio-scheduled-message', (req, res) => {
   const month = now.getMonth();
   const day = now.getDate();
 
-  if (process.env.NODE_ENV) {
-    // heroku server runs on UTC time
-    // this normalizes EST to UTC
-    hours = hours - 4;
-  }
   const date = new Date(year, month, day, hours, minutes, 0);
-  schedule.scheduleJob(date, function () {
-    sendSms(req, res);
-  });
+  const cronTime = `0 ${minutes} ${hours} ${day} ${month} *`
+
+  const task = new CronJob(
+    // second | minutes | hours | day | month | week
+    cronTime, // cron time
+    () => sendSms(req,res), 
+    null, // oncomplete
+    true, // start flag
+    'America/New_York',// timezone
+  );
+
+  // heroku config:add TZ="America/New_York"
+
   res.send({ message: `Message scheduled successfully for ${date}` });
 });
 
