@@ -47,7 +47,7 @@ twilioEmitter.on('twilio-scheduled-message', (req, res) => {
   if (process.env.NODE_ENV) {
     // heroku server runs on UTC time
     // this normalizes EST to UTC
-    hours = hour - 4;
+    hours = hours - 4;
   }
   const date = new Date(year, month, day, hours, minutes, 0);
   schedule.scheduleJob(date, function () {
