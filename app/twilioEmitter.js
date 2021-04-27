@@ -38,11 +38,17 @@ function sendSms(req, res) {
 //===eventListener to SCHEDULE MESSAGES===
 twilioEmitter.on('twilio-scheduled-message', (req, res) => {
   const { scheduledTime } = req.body;
-  const [hours, minutes] = scheduledTime;
+  let [hours, minutes] = scheduledTime;
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const day = now.getDate();
+
+  if (process.env.NODE_ENV) {
+    // heroku server runs on UTC time
+    // this normalizes EST to UTC
+    hours = hour - 4;
+  }
   const date = new Date(year, month, day, hours, minutes, 0);
   schedule.scheduleJob(date, function () {
     sendSms(req, res);
