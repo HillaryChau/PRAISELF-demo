@@ -1,4 +1,15 @@
-.profile-page {
-  /* display: flex; */
+.favorites {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.favorites-container {
+  align-items: center;
+}
+
+.custom-affirmations {
+  display: flex;
   justify-content: center;
 }

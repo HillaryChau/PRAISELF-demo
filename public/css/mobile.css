@@ -1,0 +1,55 @@
+@media (max-width: 850px) {
+  .nav-bar {
+    font-size: 2vw;
+    white-space: nowrap;
+  }
+
+  h1 {
+    font-size: 10vw;
+  }
+
+  h2 {
+    font-size: 3vw;
+  }
+
+  .affirmation-options {
+    max-width: 300px;
+  }
+
+  .affirmation-card {
+    max-width: 75%;
+  }
+}
+
+@media (max-width: 775px) {
+  .center-page {
+    margin: 0 10%;
+  }
+}
+
+@media (max-width: 625px) {
+  .center-page {
+    margin: 0 10%;
+  }
+
+  .affirmation-card {
+    max-width: 70%;
+  }
+
+  .neg-feeling-header {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .favorites, 
+  .custom-affirmations {
+    width: 75%;
+  }
+}
+
+@media (max-width: 425px) {
+  .center-page {
+    margin: 0 5%;
+  }
+}

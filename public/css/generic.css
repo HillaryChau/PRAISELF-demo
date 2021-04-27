@@ -78,6 +78,10 @@ input.no-styles:focus {
   visibility: hidden;
 }
 
+.justify-space-around {
+  justify-content: space-around;
+}
+
 .link {
   color: blue;
   font-weight: 900;
