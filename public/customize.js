@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     return;
   }
 
+  // found this promise chaining on stackoverflow
+  // first reason, to guarentee the order of the async functions that are completed (and to avoid callback hell)
   new Promise(function (resolve, reject) {
-    setTimeout(() => resolve(1), 1);
+    setTimeout(() => resolve(1), 1); 
   }).then(() => addListeners());
 });
 

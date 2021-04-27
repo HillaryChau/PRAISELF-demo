@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then(() => addListeners());
 });
 
+//helper function to help add classes to our elements likes cards, buttons etc // 
 function addClasses(element, classes) {
   for (let i = 0; i < classes.length; i++) {
     element.classList.add(classes[i]);
@@ -47,6 +48,9 @@ function openSmsModal(event) {
 function onCloseModal() {
   document.querySelector('.modal').classList.add('invisible');
 }
+
+
+// SCHEDULE SMS 
 
 function onSendScheduledSms(event) {
   event.preventDefault();
@@ -174,6 +178,7 @@ function renderAffirmationCard({ affirmation, favorite, isCreatedByLoggedInUser 
   sendScheduledSmsBtn.setAttribute('data-affirmation-id', affirmation._id);
   buttonsContainer.append(sendScheduledSmsBtn);
 
+ // if user wants to delete own custom affirmation // 
   if (isCustom && isCreatedByLoggedInUser) {
     deleteAffirmationBtn.append(trashIcon);
     deleteAffirmationBtn.append('Delete');

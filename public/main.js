@@ -58,36 +58,29 @@ function onSendText(event) {
   event.preventDefault();
   const phoneNumber = document.querySelector('.form-phone-number').value;
   const form = document.querySelector('.send-sms-form');
-  const isValid = form.checkValidity();
+  form.checkValidity();
   form.reportValidity();
 
-  if (isValid) {
-    // if we have a valid phone number we send a post req to the twilio route
-    fetch('twilio', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        link: window.link, // this will send the actual url of the page you are on, which shows whenever a affirmation card is rendered
-        phoneNumber: phoneNumber, //these (3) things are parsed on the routes.js in the post request of the twilio API
-        affirmation: window.currentAffirmation, //affirmation key shows the current affirmation on the screen
-      }),
+  // if we have a valid phone number we send a post req to the twilio route
+  fetch('twilio', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      link: window.link, // this will send the actual url of the page you are on, which shows whenever a affirmation card is rendered
+      phoneNumber: phoneNumber, //these (3) things are parsed on the routes.js in the post request of the twilio API
+      affirmation: window.currentAffirmation, //affirmation key shows the current affirmation on the screen
+    }),
+  })
+    .then((res) => {
+      return res.json();
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((resObject) => {
-        document.querySelector('.twilio-response').innerHTML = resObject.message;
+    .then((resObject) => {
+      document.querySelector('.twilio-response').innerHTML = resObject.message;
 
-        setTimeout(() => {
-          document.querySelector('.twilio-response').innerHTML = '';
-        }, 5000);
-      });
-  } else {
-    document.querySelector('.invalid-number').classList.remove('hide');
-    setTimeout(() => {
-      document.querySelector('.invalid-number').classList.add('hide');
-    }, 5000);
-  }
+      setTimeout(() => {
+        document.querySelector('.twilio-response').innerHTML = '';
+      }, 5000);
+    });
 }
 
 // this is the ?id of the affirmation >
