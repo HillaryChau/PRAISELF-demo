@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken); // picks up twilio from the node modules and helps you login to twilio with the variables accountSid, authToken)
 const twilioEmitter = new EventEmitter();
 
-function sendSms(req, res) {
+function sendSms(req, res, additionalText = '') {
   const { phoneNumber, link, affirmation } = req.body; // destructured code, same as writing it as const phoneNumber = req.body.phoneNumber//
   const { negativeEmotion, positiveAffirmation } = affirmation;
   const textHeader = 'Hello from PRAISELF.';
@@ -14,7 +14,7 @@ function sendSms(req, res) {
   const emotionsBody = '• ' + positiveAffirmation.split('. ').join('.\n• ');
   const textFooter = `See these affirmations at ${link}`;
   const textFooterEnd = `🌻 🌻 🌻 🌻 🌻 🌻 🌻 🌻 🌻`;
-  const body = [textHeader, feelingHeader, emotionsHeader, emotionsBody, textFooter, textFooterEnd].join('\n\n');
+  const body = [textHeader, additionalText, feelingHeader, emotionsHeader, emotionsBody, textFooter, textFooterEnd].join('\n\n');
 
   //=== this is where the SMS promise is created===
   client.messages
@@ -44,7 +44,7 @@ twilioEmitter.on('twilio-scheduled-message', (req, res, db) => {
   const date = new Date(year, month, day, hours, minutes, 0);
 
   const onTick = function () {
-    sendSms(req, res);
+    sendSms(req, res, 'This is a scheduled text.');
     this.stop();
   };
 
