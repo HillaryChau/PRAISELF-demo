@@ -96,6 +96,8 @@ function applyQueryParams() {
   }
 }
 
+// if there is no ?id, select option with value 17
+// render that affirmationCard`
 function renderDefaultAffirmation() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
