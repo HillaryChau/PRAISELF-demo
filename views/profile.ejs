@@ -54,6 +54,13 @@
         <div class="modal-header"><span>Schedule a Text</span><i class="close-modal-button clickable fas fa-times"></i></div>
         <div class="sms-form-container">
           <form class="send-sms-form">
+            <label for="options-today-tomorrow">Pick a day</label>
+            <div class="d-flex">
+              <input type="radio" id="option-today" name="options-today-tomorrow" value="today" checked />
+              <label for="options-today">Today</label>
+              <input type="radio" id="option-tomorrow" name="options-today-tomorrow" value="tomorrow" />
+              <label for="options-tomorrow">Tomorrow</label>
+            </div>
             <label for="scheduled-sms">Pick a time today between now and 9pm to schedule a text.</label>
             <input type="time" id="scheduled-sms" class="scheduled-sms" name="sms-time-picker" />
             <label for="phone-number">Enter your phone number as +1 and (10 digit phone number)</label>

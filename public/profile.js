@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then(() => addListeners());
 });
 
-//helper function to help add classes to our elements likes cards, buttons etc // 
+//helper function to help add classes to our elements likes cards, buttons etc //
 function addClasses(element, classes) {
   for (let i = 0; i < classes.length; i++) {
     element.classList.add(classes[i]);
@@ -49,12 +49,12 @@ function onCloseModal() {
   document.querySelector('.modal').classList.add('invisible');
 }
 
-
-// SCHEDULE SMS 
+// SCHEDULE SMS
 
 function onSendScheduledSms(event) {
   event.preventDefault();
 
+  const isToday = document.querySelector('input[name="options-today-tomorrow"]').checked; // checks if radio option is checked
   const nowTime = new Date(Date.now()).toString().substring(16, 21).split(':'); // resolves to [13, 15] at 1:15 pm
   const inputTime = document.querySelector('.scheduled-sms').value.split(':'); // resolves to [13, 15] at 1:15 pm
   const phoneNumber = document.querySelector('.form-phone-number').value;
@@ -91,6 +91,7 @@ function onSendScheduledSms(event) {
       phoneNumber: phoneNumber, // these things are parsed on the routes.js in the post request of the twilio API
       affirmation: window.currentAffirmation, // affirmation key shows the current affirmation on the screen
       scheduledTime: inputTime,
+      isToday: isToday, // if isToday is true, text is for today, otherwise its for tomorrow
     }),
   })
     .then((res) => {
@@ -178,7 +179,7 @@ function renderAffirmationCard({ affirmation, favorite, isCreatedByLoggedInUser 
   sendScheduledSmsBtn.setAttribute('data-affirmation-id', affirmation._id);
   buttonsContainer.append(sendScheduledSmsBtn);
 
- // if user wants to delete own custom affirmation // 
+  // if user wants to delete own custom affirmation //
   if (isCustom && isCreatedByLoggedInUser) {
     deleteAffirmationBtn.append(trashIcon);
     deleteAffirmationBtn.append('Delete');

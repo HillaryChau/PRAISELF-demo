@@ -7,7 +7,7 @@ module.exports = function (app, passport, db) {
   // ========================== TWILIO ==========================
 
   app.post('/scheduled-twilio', function (req, res) {
-    twilioEmitter.emit('twilio-scheduled-message', req, res);
+    twilioEmitter.emit('twilio-scheduled-message', req, res, db);
   });
 
   app.post('/twilio', function (req, res) {

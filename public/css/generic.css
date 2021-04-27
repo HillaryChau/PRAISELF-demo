@@ -55,14 +55,6 @@ input.no-styles:focus {
   outline: none;
 }
 
-.hide {
-  display: none !important;
-}
-
-.invisible {
-  visibility: hidden;
-}
-
 .clickable,
 .clickable-button {
   cursor: pointer;
@@ -74,19 +66,31 @@ input.no-styles:focus {
   transform-origin: 0 0;
 }
 
-.nav-bar > * {
-  margin: 0 20px;
+.d-flex {
+  display: flex;
 }
-.m-10-auto{
+
+.hide {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.link {
+  color: blue;
+  font-weight: 900;
+}
+
+.m-10-auto {
   margin: 10px auto;
 }
 
-.link{
-  color:blue;
-  font-weight: 900;
+.nav-bar > * {
+  margin: 0 20px;
 }
 
 .w-100 {
   width: 100%;
 }
-
