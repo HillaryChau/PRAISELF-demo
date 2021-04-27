@@ -55,8 +55,8 @@ function onSendScheduledSms(event) {
   event.preventDefault();
 
   const isToday = document.querySelector('input[name="options-today-tomorrow"]').checked; // checks if radio option is checked
-  const nowTime = new Date(Date.now()).toString().substring(16, 21).split(':'); // resolves to [13, 15] at 1:15 pm
-  const inputTime = document.querySelector('.scheduled-sms').value.split(':'); // resolves to [13, 15] at 1:15 pm
+  const nowTime = new Date(Date.now()).toString().substring(16, 21).split(':').map(e => Number(e)); // resolves to [13, 15] at 1:15 pm
+  const inputTime = document.querySelector('.scheduled-sms').value.split(':').map(e => Number(e)); // resolves to [13, 15] at 1:15 pm
   const phoneNumber = document.querySelector('.form-phone-number').value;
   const form = document.querySelector('.send-sms-form');
   const isValid = form.checkValidity();
@@ -68,18 +68,21 @@ function onSendScheduledSms(event) {
     return;
   }
 
-  // time is invalid if the current time is passed the scheduled time
-  // you are not allowed to set a scheduled message for a time in the past
-  if (Number(nowTime[0]) >= Number(inputTime[0]) && Number(nowTime[1]) > Number(inputTime[1])) {
-    document.querySelector('.invalid-time').classList.remove('hide');
-    setTimeout(() => document.querySelector('.invalid-time').classList.add('hide'), 5000);
+  // time is invalid if scheduled time is after 9pm and before 7am
+  if (inputTime[0] >= 21 && inputTime[0] <= 6) {
+    document.querySelector('.invalid-time-7-9').classList.remove('hide');
+    setTimeout(() => document.querySelector('.invalid-time-7-9').classList.add('hide'), 5000);
     return;
   }
 
-  // time is invalid if scheduled time is after 9pm and before 7am
-  if (Number(inputTime[0]) >= 21 && Number(inputTime[0]) <= 6) {
-    document.querySelector('.invalid-time').classList.remove('hide');
-    setTimeout(() => document.querySelector('.invalid-time').classList.add('hide'), 5000);
+  // time is invalid if the current time is passed the scheduled time
+  // you are not allowed to set a scheduled message for a time in the past
+  const now = Number(nowTime.join(''))
+  const input = Number(inputTime.join(''))
+
+  if (isToday && now >= input) {
+    document.querySelector('.invalid-time-future').classList.remove('hide');
+    setTimeout(() => document.querySelector('.invalid-time-future').classList.add('hide'), 5000);
     return;
   }
 

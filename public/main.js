@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     .then(() => getCustomAffirmations()) // ^^
     .then(() => renderOptions()) // dynamically populates the dropdown with options (the positive affirmations)
     .then(() => addListeners()) // is placed after the html elements created by JS, so the event listeners can work
-    .then(() => applyQueryParams()); // ?=id
+    .then(() => applyQueryParams()) // ?=id
+    .then(() => renderDefaultAffirmation()); // set default affirmation
 });
 
 function addListeners() {
@@ -90,6 +91,17 @@ function applyQueryParams() {
   const option = document.querySelector(`option[data-affirmation-id="${id}"]`);
 
   if (option) {
+    option.selected = true;
+    renderAffirmationCard({ target: option });
+  }
+}
+
+function renderDefaultAffirmation() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+
+  if (!id) {
+    const option = document.querySelector(`option[value="17"]`);
     option.selected = true;
     renderAffirmationCard({ target: option });
   }

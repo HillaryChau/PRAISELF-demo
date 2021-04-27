@@ -61,14 +61,15 @@
               <input type="radio" id="option-tomorrow" name="options-today-tomorrow" value="tomorrow" />
               <label for="options-tomorrow">Tomorrow</label>
             </div>
-            <label for="scheduled-sms">Pick a time today between now and 9pm to schedule a text.</label>
+            <label for="scheduled-sms">Pick a time today between 7am and 9pm to schedule a text. For today, the time also has to be after now.</label>
             <input type="time" id="scheduled-sms" class="scheduled-sms" name="sms-time-picker" />
             <label for="phone-number">Enter your phone number as +1 and (10 digit phone number)</label>
             <input type="tel" class="form-phone-number" name="phone-number" pattern="[+][0-9]{11}" placeholder="+10123456789" autocomplete="off" type="tel" required />
             <button class="send-button custom-button green" type="submit">Send SMS</button>
           </form>
           <p class="invalid-number hide">That number is invalid. Please enter number like example.</p>
-          <p class="invalid-time hide">That time is invalid. Please enter a time between 7:00am and 8:59pm.</p>
+          <p class="invalid-time-7-9 hide">That time is invalid. Please enter a time between 7:00am and 8:59pm.</p>
+          <p class="invalid-time-future hide">That time is invalid. Please enter a time in the future.</p>
           <p class="twilio-response"></p>
         </div>
       </div>
